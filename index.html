@@ -109,6 +109,10 @@ mark{background:#ffc92866;color:inherit;border-radius:6px;padding:0 4px;font-wei
 .wd{cursor:pointer;border-radius:6px;padding:0 1px}.wd:hover{background:#0f8a7a22}.wd.sel{background:var(--sun);color:#3d2c00}
 .peek{text-align:start;background:var(--bg);border-radius:14px;padding:8px 14px;margin-bottom:10px}.peek summary{cursor:pointer;font-weight:800;color:var(--teal)}.peek p{text-align:left;font-size:17px}
 #qs .stars{display:inline-flex;vertical-align:-3px}
+.again{display:inline-block;background:#e8197d18;color:var(--pink);border-radius:999px;padding:2px 14px;font-weight:800;font-size:15px;margin:0 0 8px}.again.test{background:#c27c0018;color:#c27c00}
+.score{width:150px;height:150px;border-radius:50%;margin:6px auto 10px;display:grid;place-items:center;background:conic-gradient(var(--teal) calc(var(--p)*1%),var(--line) 0)}.score span{width:118px;height:118px;border-radius:50%;background:var(--card);display:grid;place-items:center;font-size:38px;font-weight:800}
+.mist{display:grid;gap:8px;text-align:start}.mist div{background:var(--bg);border-radius:14px;padding:10px 14px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;border-inline-start:5px solid var(--bad)}.mist b{color:var(--ok)}
+.game[data-g=test]{background:linear-gradient(135deg,light-dark(#fff3cf,#3a3010),var(--card));border:2px solid #ffc928}
 .note{color:var(--soft);font-size:14px;text-align:center;margin-top:22px}
 @media(max-width:600px){.opt .e{font-size:38px}.slot{width:38px;height:50px;font-size:24px}.tile{height:52px;font-size:23px}.mascot{width:64px;height:64px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -406,6 +410,8 @@ abc:'<svg viewBox="0 0 24 24" fill="currentColor"><text x="12" y="17" text-ancho
 build:'<svg viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="8" width="6" height="8" rx="1.5"/><rect x="9" y="8" width="6" height="8" rx="1.5" opacity=".7"/><rect x="16" y="8" width="6" height="8" rx="1.5" opacity=".45"/></svg>',
 book:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 5c3-1.5 6.5-1.5 9.2.6V20c-2.7-2-6.2-2-9.2-.6zM22 5c-3-1.5-6.5-1.5-9.2.6V20c2.7-2 6.2-2 9.2-.6z"/></svg>',
 bulb:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2zM9 19h6v1.5a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 20.5z"/></svg>',
+loop:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 9"/><path d="M20 4v5h-5"/><path d="M20 12a8 8 0 0 1-13.7 5.6L4 15"/><path d="M4 20v-5h5"/></svg>',
+medal:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 2h4l1.5 5h-4zM13 2h4l-2.5 5h-4z" opacity=".7"/><circle cx="12" cy="14.5" r="6.5"/><path d="M12 10.5l1.2 2.5 2.7.3-2 1.9.5 2.7-2.4-1.3-2.4 1.3.5-2.7-2-1.9 2.7-.3z" fill="#fff"/></svg>',
 play:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z"/></svg>',
 gram:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M4 7h16M4 12h6M14 12h6M4 17h10"/><path d="M10 12h4" stroke-dasharray="1 2.5"/></svg>'
 };
@@ -418,7 +424,9 @@ const G=[
 {k:'spell',ar:'تهجئة الكلمة',d:'رتّب الحروف لتكتب الكلمة',ic:'abc',c:'#f08a00',sk:'كتابة'},
 {k:'say',ar:'انطق الكلمة',d:'اسمع وقلّد النطق بصوتك',ic:'mic',c:'#e8197d',sk:'نطق'},
 {k:'build',ar:'رتّب الجملة',d:'اسمع الجملة ورتّب كلماتها',ic:'build',c:'#1fa45a',sk:'تركيب جمل'},
-{k:'gram',ar:'أكمل الجملة',d:'اختر الكلمة الصحيحة في الفراغ',ic:'gram',c:'#d63a3a',sk:'قواعد'}
+{k:'gram',ar:'أكمل الجملة',d:'اختر الكلمة الصحيحة في الفراغ',ic:'gram',c:'#d63a3a',sk:'قواعد'},
+{k:'review',ar:'المراجعة الذكية',d:'أسئلة منوّعة من كل دروس الوحدة، وما تخطئ فيه يتكرر حتى تتقنه',ic:'loop',c:'#0e9aa7',sk:'مراجعة شاملة'},
+{k:'test',ar:'اختبار نهاية الوحدة',d:'اختبار شامل بمحاولة واحدة لكل سؤال ونتيجة بالنسبة المئوية',ic:'medal',c:'#c27c00',sk:'اختبار'}
 ];
 
 /* storage */
@@ -489,7 +497,7 @@ function home(){
 function unit(u){
   app.innerHTML=`<div class="wrap"><div class="sub"><button class="back" aria-label="رجوع">${ICON.back}</button><div><h2>${u.ar}</h2><small class="en" style="color:var(--soft)">Unit ${u.n} · ${u.en}</small></div><div class="total" style="background:var(--card);color:var(--ink);box-shadow:0 4px 0 var(--line)">${ICON.star(1).replace('<svg','<svg width="20" height="20"')} <span class="en">${uStars(u)}/${MAXU}</span></div></div>
   <div class="hero">${scene(u.sc[0],u.sc[1])}</div>
-  <div class="games">${G.map(g=>`<button class="game" data-g="${g.k}"><span class="ic" style="background:${g.c}">${ICON[g.ic]}</span><span><b>${g.ar}</b><small>${g.d}</small>${g.k==='learn'?`<small style="color:${g.c};font-weight:800">ابدأ من هنا</small>`:starRow(gst(u,g.k))}${g.k==='read'&&u.reads.length>1?`<small style="color:${g.c};font-weight:800">${u.reads.length} نصوص للقراءة</small>`:''}</span></button>`).join('')}</div></div>`;
+  <div class="games">${G.map(g=>`<button class="game" data-g="${g.k}"><span class="ic" style="background:${g.c}">${ICON[g.ic]}</span><span><b>${g.ar}</b><small>${g.d}</small>${g.k==='learn'?`<small style="color:${g.c};font-weight:800">ابدأ من هنا</small>`:starRow(gst(u,g.k))}${g.k==='review'?`<small style="color:${g.c};font-weight:800">${weakN(u)?`نقاط تحتاج تدريباً: ${weakN(u)}`:'لا توجد نقاط ضعف بعد'}</small>`:''}${g.k==='test'&&P[u.id]&&P[u.id].testPct!=null?`<small style="color:${g.c};font-weight:800">أفضل نتيجة: ${P[u.id].testPct}%</small>`:''}${g.k==='read'&&u.reads.length>1?`<small style="color:${g.c};font-weight:800">${u.reads.length} نصوص للقراءة</small>`:''}</span></button>`).join('')}</div></div>`;
   app.querySelector('.back').onclick=home;
   app.querySelectorAll('.game').forEach(b=>b.onclick=()=>start(u,b.dataset.g));
   scrollTo(0,0);
@@ -503,33 +511,76 @@ function start(u,k,x){
   if(k==='read')return u.reads.length>1?readList(u):readView(u,0);
   if(k==='rules'){items=[];u.rules.forEach((r,ri)=>{items.push({type:'rule',r,ri});sh(r.chk).forEach(c=>items.push({type:'chk',s:c,r}))})}
   if(k==='readq')items=u.reads[x].q.map(x=>({type:'q',s:x}));
-  if(k==='listen'||k==='match')items=sh(W).slice(0,8);
+  if(k==='listen')items=sh(W).slice(0,8);
+  if(k==='match')items=sh(sh(W).slice(0,5).flatMap(w=>[{k:'match',t:w,dir:'e2a'},{k:'match',t:w,dir:'a2e'}]));
+  if(k==='review')items=buildReview(u);
+  if(k==='test')items=buildTest(u);
   if(k==='spell')items=sh(W.filter(w=>/^[a-z]{3,11}$/i.test(w.en))).slice(0,6);
   if(k==='say')items=sh(W).slice(0,6);
   if(k==='build')items=sh(u.sent);
   if(k==='gram')items=sh(u.gram);
-  R={u,k,rx:x,gk:k==='readq'?'read':k,sk:k==='readq'?'read'+x:k,items,i:0,first:0,tried:false,n:items.filter(x=>x.type!=='rule').length};
+  R={u,k,rx:x,gk:k==='readq'?'read':k,sk:k==='readq'?'read'+x:k,items,i:0,first:0,tried:false,n:items.filter(x=>x.type!=='rule').length,review:k==='review',test:k==='test',wrongs:[]};
   round();
 }
 function shell(inner){
   const g=G.find(x=>x.k===R.gk);
   app.innerHTML=`<div class="wrap"><div class="sub"><button class="back" aria-label="رجوع">${ICON.back}</button><div><h2>${g.ar}</h2><small style="color:var(--soft)">${R.u.ar} · مهارة: ${g.sk}</small></div></div>
-  <div class="play"><div class="prog"><span class="en">${R.i+1}/${R.items.length}</span><span class="bar"><i style="width:${R.i/R.items.length*100}%;background:${g.c}"></i></span></div>${inner}<div class="toast" id="toast"></div></div></div>`;
+  <div class="play"><div class="prog"><span class="en">${R.i+1}/${R.items.length}</span><span class="bar"><i style="width:${R.i/R.items.length*100}%;background:${g.c}"></i></span></div>${R.cur&&R.cur.again?'<p class="again">سؤال تكرّر لأنك أخطأت فيه — ركّز جيداً</p>':''}${R.test?'<p class="again test">اختبار: محاولة واحدة لكل سؤال</p>':''}${inner}<div class="toast" id="toast"></div></div></div>`;
   app.querySelector('.back').onclick=()=>{try{speechSynthesis.cancel()}catch(e){}unit(R.u)};
 }
 const toast=(ok,t)=>{const e=$('#toast');e.className='toast '+(ok?'ok':'no');e.textContent=t};
 function good(speak){
-  if(!R.tried)R.first++;
+  if(R.fin===R.i)return;R.fin=R.i;
+  if(!R.tried){if(!(R.cur&&R.cur.again))R.first++;weak(R.key,-1)}
   beep(true);toast(true,praise());
   if(speak)setTimeout(()=>say(speak),250);
   setTimeout(next,speak&&speak.length>14?2300:1400);
 }
-function bad(){R.tried=true;beep(false);toast(false,'حاول مرة أخرى')}
+function bad(){
+  if(R.fin===R.i)return;
+  if(!R.tried){weak(R.key,2);if(R.review&&R.cur&&!R.cur.again){const c=Object.assign({},R.items[R.i],{again:true});if(!c.k)c.k=R.k;R.items.splice(Math.min(R.items.length,R.i+3),0,c)}}
+  R.tried=true;beep(false);
+  if(R.test){R.fin=R.i;R.lock=true;R.wrongs.push({q:R.qtext,a:R.ans});app.querySelectorAll('.opt').forEach(b=>{if(b.dataset.v===R.optAns)b.classList.add('right')});toast(false,'الإجابة الصحيحة: '+R.ans);setTimeout(next,2600);return}
+  toast(false,'حاول مرة أخرى')}
+function weak(key,d){if(!key)return;const p=P[R.u.id]=P[R.u.id]||{},w=p.wk=p.wk||{};w[key]=Math.max(0,Math.min(5,(w[key]||0)+d));if(!w[key])delete w[key];save()}
+const weakN=u=>Object.keys((P[u.id]&&P[u.id].wk)||{}).length;
+function setMeta(k,t,dir,it){
+  R.cur={k,again:!!(it&&it.again)};R.key=null;R.rev=dir?dir==='a2e':R.i%2===1;
+  if(['listen','match','spell','say'].includes(k)){R.key='w:'+t.en;R.optAns=t.en;R.ans=t.en;R.qtext=k==='listen'?'استماع: '+t.p:k==='spell'?'اكتب: '+t.ar:t.ar;
+    if(k==='match'&&!R.rev){R.ans=t.ar;R.qtext=t.en}}
+  if(k==='build'){R.key='s:'+t;R.ans=t;R.qtext='رتّب الجملة'}
+  const bq=x=>{const [q,...o]=x.split('|');R.optAns=o[0];R.ans=q.includes('___')?q.replace('___',o[0]):o[0];R.qtext=q;return q};
+  if(k==='gram')R.key='g:'+bq(t);
+  if(t&&t.type==='chk')R.key='r:'+bq(t.s);
+  if(t&&t.type==='q')R.key='q:'+bq(t.s);
+}
+function pool(u){
+  const A=[];
+  u.W.forEach(w=>{A.push({k:'match',t:w,dir:'e2a'},{k:'match',t:w,dir:'a2e'},{k:'listen',t:w});if(/^[a-z]{3,11}$/i.test(w.en))A.push({k:'spell',t:w})});
+  u.sent.forEach(x=>A.push({k:'build',t:x}));
+  u.gram.forEach(x=>A.push({k:'gram',t:x}));
+  u.rules.forEach(r=>r.chk.forEach(c=>A.push({k:'rules',t:{type:'chk',s:c,r}})));
+  u.reads.forEach((rd,rx)=>rd.q.forEach(q=>A.push({k:'readq',t:{type:'q',s:q,rx}})));
+  return A;
+}
+const keyOf=it=>{const t=it.t;return it.k==='build'?'s:'+t:it.k==='gram'?'g:'+t.split('|')[0]:t.type?(t.type==='chk'?'r:':'q:')+t.s.split('|')[0]:'w:'+t.en};
+function buildReview(u){
+  const wk=(P[u.id]&&P[u.id].wk)||{},cnt={},out=[];
+  const sc=sh(pool(u)).map(it=>({it,v:(wk[keyOf(it)]||0)*3+Math.random()*2})).sort((a,b)=>b.v-a.v);
+  for(const {it} of sc){const kk=keyOf(it);if((cnt[kk]||0)>=2)continue;cnt[kk]=(cnt[kk]||0)+1;out.push(it);if(out.length>=12)break}
+  return sh(out);
+}
+function buildTest(u){
+  const A=pool(u),pick=(f,n)=>sh(A.filter(f)).slice(0,n);
+  return sh([...pick(x=>x.k==='listen',3),...pick(x=>x.dir==='e2a',2),...pick(x=>x.dir==='a2e',2),...pick(x=>x.k==='spell',2),...pick(x=>x.k==='build',2),...pick(x=>x.k==='gram',2),...pick(x=>x.k==='rules',2),...pick(x=>x.k==='readq',2)]);
+}
 function next(){R.i++;R.tried=false;R.lock=false;if(R.i>=R.items.length)return end();round()}
 function wrongs(t,n){return sh(R.u.W.filter(w=>w.en!==t.en&&w.p!==t.p)).slice(0,n)}
 
 function round(){
-  const t=R.items[R.i],k=R.k;
+  const it=R.items[R.i];let k=R.k,t=it,dir=null;
+  if(it&&it.k){k=it.k;t=it.t;dir=it.dir}
+  setMeta(k,t,dir,it);
   if(k==='rules'||k==='readq')return lessonRound(t);
   if(k==='listen'){
     const opts=sh([t,...wrongs(t,3)]);
@@ -540,7 +591,7 @@ function round(){
     bindOpts(t.en,null);
   }
   if(k==='match'){
-    const rev=R.i%2===1,opts=sh([t,...wrongs(t,3)]);
+    const rev=R.rev,opts=sh([t,...wrongs(t,3)]);
     shell(rev?`<p class="ask">ما الكلمة الإنجليزية لهذا المعنى؟</p><div class="pic">${t.p}</div><div class="big">${t.ar}</div>
       <div class="opts">${opts.map(o=>`<button class="opt en" data-v="${esc(o.en)}">${o.en}</button>`).join('')}</div>`
     :`<p class="ask">اقرأ الكلمة واختر معناها</p><div class="big en">${t.en}</div><button class="spk" id="s1">${ICON.spk} اسمع</button>
@@ -554,7 +605,7 @@ function round(){
     const letters=sh([...w.split(''),...extra]);let fill=[];
     shell(`<p class="ask">اكتب الكلمة بالإنجليزية</p><div class="pic">${t.p}</div><div class="ar">${t.ar}</div><button class="spk" id="s1">${ICON.spk} اسمع</button>
     <div class="slots" id="sl"></div><div class="tiles" id="tl">${letters.map((c,i)=>`<button class="tile" data-i="${i}">${c}</button>`).join('')}</div>
-    <div class="row"><button class="spk alt" id="clr">امسح</button><button class="spk pk" id="hint">تلميح</button></div>`);
+    <div class="row"><button class="spk alt" id="clr">امسح</button>${R.test?'':'<button class="spk pk" id="hint">تلميح</button>'}</div>`);
     $('#s1').onclick=()=>say(t.en);
     const draw=()=>{$('#sl').innerHTML=w.split('').map((_,i)=>`<button class="slot ${fill[i]!=null?'f':''}" data-s="${i}">${fill[i]!=null?letters[fill[i]]:''}</button>`).join('');
       app.querySelectorAll('#tl .tile').forEach(b=>b.classList.toggle('used',fill.includes(+b.dataset.i)));
@@ -562,7 +613,7 @@ function round(){
     app.querySelectorAll('#tl .tile').forEach(b=>b.onclick=()=>{if(fill.length>=w.length)return;fill.push(+b.dataset.i);say(letters[+b.dataset.i]);draw();
       if(fill.length===w.length){const got=fill.map(i=>letters[i]).join('');if(got===w){good(t.en)}else{bad();$('#sl').classList.add('wrong');setTimeout(()=>{fill=[];draw()},700)}}});
     $('#clr').onclick=()=>{fill=[];draw()};
-    $('#hint').onclick=()=>{R.tried=true;let n=0;while(n<fill.length&&letters[fill[n]]===w[n])n++;fill=fill.slice(0,n);const idx=letters.findIndex((c,i)=>c===w[n]&&!fill.includes(i));if(idx>-1){fill.push(idx);draw()}};
+    if($('#hint'))$('#hint').onclick=()=>{R.tried=true;let n=0;while(n<fill.length&&letters[fill[n]]===w[n])n++;fill=fill.slice(0,n);const idx=letters.findIndex((c,i)=>c===w[n]&&!fill.includes(i));if(idx>-1){fill.push(idx);draw()}};
     draw();
   }
   if(k==='say'){
@@ -607,13 +658,25 @@ function bindOpts(ans,speak){
     else{b.classList.remove('wrong');void b.offsetWidth;b.classList.add('wrong');bad()}});
 }
 function end(){
+  if(R.test)return testEnd();
   const r=R.first/R.n,s=r>=.9?3:r>=.6?2:1;
   P[R.u.id]=P[R.u.id]||{};if(s>st(R.u.id,R.sk))P[R.u.id][R.sk]=s;save();
   app.querySelector('.play').innerHTML=`<div class="end">${MASCOT}<h3>${s===3?'أنت بطل!':s===2?'عمل رائع!':'أحسنت، واصل التدريب!'}</h3>${starRow(s)}
-  <p>أجبت صحيحاً من أول محاولة في <b class="en">${R.first}</b> من <b class="en">${R.n}</b></p>
+  <p>أجبت صحيحاً من أول محاولة في <b class="en">${R.first}</b> من <b class="en">${R.n}</b></p>${R.review?`<p class="ask">${weakN(R.u)?`نقاط ما زالت تحتاج تدريباً: <b class="en">${weakN(R.u)}</b> — ستظهر لك أكثر في المراجعة القادمة`:'ممتاز! لا توجد نقاط ضعف الآن في هذه الوحدة'}</p>`:''}
   <div class="row"><button class="spk" id="again">العب مرة أخرى</button><button class="spk alt" id="back">ألعاب الوحدة</button></div></div>`;
   beep(true);setTimeout(()=>say(s===3?'Excellent! You are a star!':'Good job!'),300);
   $('#again').onclick=()=>R.k==='readq'?readView(R.u,R.rx):start(R.u,R.k);$('#back').onclick=()=>R.k==='readq'&&R.u.reads.length>1?readList(R.u):unit(R.u);
+}
+function testEnd(){
+  const pct=Math.round(R.first/R.n*100),s=pct>=90?3:pct>=70?2:pct>=50?1:0,id=R.u.id;
+  P[id]=P[id]||{};if(s>st(id,'test'))P[id].test=s;if(pct>(P[id].testPct||0))P[id].testPct=pct;P[id].testLast=pct;save();
+  const msg=pct>=90?'ممتاز! أتقنت الوحدة':pct>=70?'جيد جداً!':pct>=50?'جيد، راجع أخطاءك':'تحتاج مراجعة أكثر';
+  app.querySelector('.play').innerHTML=`<div class="end"><div class="score" style="--p:${pct}"><span class="en">${pct}%</span></div><h3>${msg}</h3>${starRow(s)}
+  <p><b class="en">${R.first}</b> إجابة صحيحة من <b class="en">${R.n}</b></p>
+  ${R.wrongs.length?`<h4 style="margin:18px 0 8px">راجع أخطاءك</h4><div class="mist">${R.wrongs.map(w=>`<div><span>${bi(w.q)}</span><b class="en">${esc(w.a)}</b></div>`).join('')}</div><p class="ask">أضفنا هذه الأسئلة إلى المراجعة الذكية لتتدرّب عليها</p>`:''}
+  <div class="row"><button class="spk" id="again">أعد الاختبار</button>${R.wrongs.length?'<button class="spk pk" id="rev">المراجعة الذكية</button>':''}<button class="spk alt" id="back">ألعاب الوحدة</button></div></div>`;
+  beep(true);setTimeout(()=>say(pct>=70?'Great job!':'Keep practicing!'),300);
+  $('#again').onclick=()=>start(R.u,'test');$('#back').onclick=()=>unit(R.u);if($('#rev'))$('#rev').onclick=()=>start(R.u,'review');
 }
 const bi=t=>esc(t).replace(/[A-Za-z][A-Za-z' ,…?!-]*[A-Za-z?…']|[A-Za-z]/g,m=>`<span class="en">${m}</span>`);
 const hl=e=>esc(e).replace(/\[(.*?)\]/g,'<mark>$1</mark>');
@@ -646,7 +709,7 @@ function lessonRound(t){
   }
   const [q,...o]=t.s.split('|');
   if(t.type==='chk')return blankQ('تدرّب: '+t.r.t,q,o,o[0]);
-  const rd=R.u.reads[R.rx];
+  const rd=R.u.reads[t.rx??R.rx];
   blankQ('اختر الإجابة الصحيحة من القصة',q,o,o[0],`<details class="peek"><summary>اقرأ القصة مرة أخرى</summary><p class="en">${esc(rd.text)}</p></details>`);
 }
 const ALLW={};U.forEach(u=>u.W.forEach(w=>{if(!/\s/.test(w.en))ALLW[w.en.toLowerCase()]=w.ar}));
