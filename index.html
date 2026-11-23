@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>مغامرة الإنجليزي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+/* VOICE: warm, playful, encouraging — a kid's game console for the Top Goal 1 book
+   IDEA: an island map; each unit is an island with stars to collect
+   PICTURE: the game board itself — big tappable cards, pictures, letters
+   COLOUR and TYPE: book teal + pink accent + sunny yellow; Baloo Bhaijaan 2
+   LAYOUT: one column, big targets, works on a phone first */
+:root{color-scheme:light dark;--bg:light-dark(#f3fbf8,#0d2522);--card:light-dark(#fff,#16332f);--ink:light-dark(#10322d,#e8f6f2);--soft:light-dark(#5c7a75,#9cbcb6);--teal:#0f8a7a;--pink:#e8197d;--sun:#ffc928;--ok:#1fa45a;--bad:#e0453a;--line:light-dark(#d6ebe6,#25504a)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 "Baloo Bhaijaan 2",system-ui,sans-serif;overflow-x:clip;min-height:100vh}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+button:focus-visible{outline:3px solid var(--pink);outline-offset:3px}
+.en{direction:ltr;unicode-bidi:isolate}
+.wrap{max-width:860px;margin:0 auto;padding:0 max(4vw,14px) 40px}
+header.top{background:var(--teal);color:#fff;padding:22px max(4vw,14px) 64px;position:relative;overflow:hidden}
+header.top .in{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:16px}
+header.top h1{margin:0;font-size:clamp(30px,6vw,44px);line-height:1.05;font-weight:800}
+header.top p{margin:4px 0 0;opacity:.9}
+.wave{position:absolute;inset:auto 0 -1px 0;height:46px;width:100%}
+.mascot{width:86px;height:86px;flex:none}
+.total{margin-inline-start:auto;background:#fff2;border-radius:999px;padding:6px 14px;font-weight:800;display:flex;gap:6px;align-items:center;white-space:nowrap}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:14px;margin-top:-34px;position:relative}
+.unit{background:var(--card);border-radius:22px;padding:16px;text-align:start;display:grid;grid-template-columns:64px minmax(0,1fr);gap:4px 12px;align-items:center;box-shadow:0 6px 0 var(--line),0 10px 24px #0f8a7a1a;transition:transform .15s}
+.unit:hover{transform:translateY(-3px)}
+.unit .num{grid-row:span 3;width:64px;height:64px;border-radius:18px;display:grid;place-items:center;font-size:32px;color:#fff;font-weight:800}
+.unit b{font-size:20px;line-height:1.1}.unit small{color:var(--soft)}
+.stars{display:flex;gap:2px}.stars svg{width:16px;height:16px}
+.bar{height:8px;border-radius:9px;background:var(--line);overflow:hidden}.bar i{display:block;height:100%;background:var(--sun)}
+.sub{display:flex;align-items:center;gap:12px;padding:16px 0}
+.back{width:48px;height:48px;border-radius:16px;background:var(--card);display:grid;place-items:center;box-shadow:0 4px 0 var(--line);flex:none}
+.back svg{width:24px;height:24px}
+.sub h2{margin:0;font-size:clamp(24px,5vw,32px);line-height:1.1}
+.games{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:12px}
+.game{background:var(--card);border-radius:20px;padding:14px 16px;display:flex;gap:14px;align-items:center;text-align:start;box-shadow:0 5px 0 var(--line);min-height:84px}
+.game .ic{width:54px;height:54px;border-radius:16px;display:grid;place-items:center;flex:none;color:#fff}
+.game .ic svg{width:30px;height:30px}
+.game b{display:block;font-size:19px;line-height:1.15}.game small{color:var(--soft);display:block;line-height:1.3}
+.game .stars{margin-top:3px}
+.play{background:var(--card);border-radius:26px;padding:clamp(16px,4vw,28px);box-shadow:0 6px 0 var(--line);text-align:center}
+.prog{display:flex;align-items:center;gap:10px;margin-bottom:12px}.prog .bar{flex:1;height:12px}
+.prog span{font-weight:800;color:var(--soft);white-space:nowrap}
+.ask{font-size:18px;color:var(--soft);margin:0 0 8px}
+.pic{font-size:clamp(64px,16vw,96px);line-height:1.1;margin:6px 0}
+.big{font-size:clamp(30px,8vw,46px);font-weight:800;line-height:1.1;margin:4px 0 10px}
+.ar{font-size:22px;color:var(--soft)}
+.spk{display:inline-flex;align-items:center;gap:8px;background:var(--teal);color:#fff;border-radius:999px;padding:10px 20px;font-weight:800;min-height:48px;box-shadow:0 4px 0 #0a5f54;margin:4px}
+.spk.alt{background:var(--sun);color:#3d2c00;box-shadow:0 4px 0 #c99a10}.spk.pk{background:var(--pink);box-shadow:0 4px 0 #a5105a}
+.spk svg{width:22px;height:22px}
+.spk:active,.opt:active,.tile:active{transform:translateY(3px);box-shadow:none}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
+.opt{background:var(--bg);border:3px solid var(--line);border-radius:20px;padding:12px 8px;min-height:72px;font-size:21px;font-weight:600;box-shadow:0 4px 0 var(--line);line-height:1.2}
+.opt .e{font-size:44px;display:block;line-height:1.15}
+.opt.right{border-color:var(--ok);background:#1fa45a22}.opt.wrong{border-color:var(--bad);background:#e0453a1f;animation:shake .35s}
+.opts.one{grid-template-columns:minmax(0,1fr)}
+@keyframes shake{25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.slots,.tiles,.line{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;direction:ltr;margin:14px 0}
+.slot{width:46px;height:56px;border-radius:12px;border:3px dashed var(--line);display:grid;place-items:center;font-size:28px;font-weight:800}
+.slot.f{border-style:solid;border-color:var(--teal);background:#0f8a7a14}
+.tile{min-width:50px;height:56px;padding:0 14px;border-radius:14px;background:var(--sun);color:#3d2c00;font-size:26px;font-weight:800;box-shadow:0 4px 0 #c99a10}
+.tile.w{font-size:21px;background:#ffe9a6}
+.tile.used{visibility:hidden}
+.line{min-height:70px;border-bottom:3px solid var(--line);padding-bottom:10px;align-items:center}
+.line .tile{background:var(--teal);color:#fff;box-shadow:0 4px 0 #0a5f54}
+.line.wrong{animation:shake .35s}
+.gq{font-size:clamp(22px,5.4vw,30px);font-weight:600;direction:ltr;line-height:1.35;margin:10px 0}
+.gq u{text-decoration:none;display:inline-block;min-width:80px;border-bottom:3px solid var(--pink);color:var(--pink)}
+.row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:10px}
+.toast{min-height:34px;font-weight:800;font-size:22px;margin-top:12px}
+.toast.ok{color:var(--ok)}.toast.no{color:var(--bad)}
+.flash{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 2px 14px;direction:ltr}
+.fc{flex:0 0 min(80%,300px);scroll-snap-align:center;background:var(--bg);border:3px solid var(--line);border-radius:22px;padding:18px;text-align:center}
+.fc .w{font-size:30px;font-weight:800;line-height:1.1}.fc .a{font-size:20px;color:var(--soft);direction:rtl}
+.end{padding:10px 0}.end .stars{justify-content:center;gap:8px;margin:12px 0}.end .stars svg{width:56px;height:56px}
+.end h3{font-size:32px;margin:0}
+.rule{text-align:start}
+.tag{display:inline-block;background:#2a3f8f;color:#fff;border-radius:999px;padding:2px 14px;font-weight:800;font-size:15px}
+.rule h3{font-size:clamp(24px,5.5vw,32px);line-height:1.15;margin:10px 0 6px;color:#2a3f8f}
+:root[data-theme=dark] .rule h3{color:#9fb4ff}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .rule h3{color:#9fb4ff}}
+.exp{font-size:19px;line-height:1.7;margin:0 0 14px;background:var(--bg);border-radius:18px;padding:14px 16px}
+.exs{display:grid;gap:10px;margin:8px 0 14px}
+.ex{display:flex;align-items:center;gap:12px;background:var(--bg);border:3px solid var(--line);border-radius:18px;padding:10px 14px;font-size:21px;font-weight:600;text-align:left;direction:ltr;box-shadow:0 4px 0 var(--line);min-height:56px}
+.ex .pl{width:38px;height:38px;border-radius:50%;background:#2a3f8f;color:#fff;display:grid;place-items:center;flex:none}.ex .pl svg{width:18px;height:18px}
+.ex.done{border-color:var(--ok)}.ex.done .pl{background:var(--ok)}
+mark{background:#ffc92866;color:inherit;border-radius:6px;padding:0 4px;font-weight:800;border-bottom:3px solid var(--sun)}
+.tip{background:#e8197d14;border:2px dashed var(--pink);border-radius:16px;padding:10px 14px;margin-bottom:10px;font-size:18px}
+
+.pulse{animation:pulse 1.2s infinite}
+@keyframes pulse{50%{transform:scale(1.06)}}
+.gloss{min-height:52px;margin:14px 0 6px;border-radius:16px;background:var(--bg);padding:10px 14px;color:var(--soft);font-size:18px;display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap}
+.gloss.has{color:var(--ink);background:#ffc92833;border:2px solid var(--sun)}.gloss b{font-size:24px}
+.story{direction:ltr;text-align:left;background:var(--bg);border-radius:20px;padding:12px 14px;margin:8px 0 16px}
+.sn{margin:0;padding:8px 6px;border-radius:12px;font-size:clamp(20px,4.8vw,24px);line-height:1.8;transition:background .2s}
+.sn.on{background:#ffc92855}
+.sp{width:32px;height:32px;border-radius:50%;background:var(--teal);color:#fff;display:inline-grid;place-items:center;vertical-align:-4px;margin-right:8px}.sp svg{width:15px;height:15px}
+.wd{cursor:pointer;border-radius:6px;padding:0 1px}.wd:hover{background:#0f8a7a22}.wd.sel{background:var(--sun);color:#3d2c00}
+.peek{text-align:start;background:var(--bg);border-radius:14px;padding:8px 14px;margin-bottom:10px}.peek summary{cursor:pointer;font-weight:800;color:var(--teal)}.peek p{text-align:left;font-size:17px}
+#qs .stars{display:inline-flex;vertical-align:-3px}
+.note{color:var(--soft);font-size:14px;text-align:center;margin-top:22px}
+@media(max-width:600px){.opt .e{font-size:38px}.slot{width:38px;height:50px;font-size:24px}.tile{height:52px;font-size:23px}.mascot{width:64px;height:64px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+{
+const U=[
+{id:'w',n:'W',en:'Welcome!',ar:'أهلاً وسهلاً',c:'#0f8a7a',
+words:`afraid|خائف|😨
+beautiful|جميل|🌸
+brilliant|رائع|🌟
+celebrate|يحتفل|🎉
+celebration|احتفال|🎊
+dangerous|خطير|⚠️
+different|مختلف|🍎🍌
+excellent|ممتاز|💯
+exciting|مثير|🎢
+naughty|شقي|😜
+surprised|مندهش|😮
+terrible|فظيع|😖`,
+sent:['It was a beautiful day.','We were very surprised.','The party was exciting.','My cat is very naughty.','I am not afraid.','This is the best day ever.'],
+gram:['Yesterday ___ a beautiful day.|was|is|were','We ___ very surprised.|were|was|are','A lion is ___ than a cat.|more dangerous|dangerous|most dangerous','This is the ___ party ever!|best|good|better','My brother is ___ than me.|taller|tall|tallest','___ you afraid of the dark?|Were|Was|Did']},
+{id:'1',n:'1',en:'Family Events',ar:'مناسبات عائلية',c:'#e8197d',
+words:`aunt|عمّة / خالة|👩
+uncle|عمّ / خال|👨
+cousin|ابن العم أو الخال|🧒
+daughter|ابنة|👧
+son|ابن|👦
+grandson|حفيد|👴👦
+granddaughter|حفيدة|👵👧
+grandparents|الجدّ والجدّة|👴👵
+parents|الوالدان|👨‍👩
+husband|زوج|🤵
+wife|زوجة|👰
+chatty|كثير الكلام|🗣️
+helpful|متعاون|🤝
+kind|لطيف|💗
+lazy|كسول|🛋️
+shy|خجول|🙈
+strong|قوي|💪
+tired|متعب|😴
+huge|ضخم|🐘
+rabbit|أرنب|🐰
+parrot|ببغاء|🦜
+kitten|قطة صغيرة|🐱`,
+sent:['How often do you walk in the park?','I always walk in the morning.','I never forget to feed the cat.','Whose rabbit is this?','It is mine.','My aunt is very kind.','My cousin is chatty and helpful.'],
+gram:['How often ___ you walk in the park?|do|does|are','How often ___ she have a cold?|does|do|is','I ___ forget to feed the cat. (0%)|never|always|usually','___ rabbit is this?|Whose|Who|Where','This is my book. It is ___.|mine|my|me','That is their house. It is ___.|theirs|their|them','She ___ walks in the morning. (100%)|always|never|rarely','Is this your pen? Yes, it is ___.|mine|yours|me']},
+{id:'2',n:'2',en:'Chores',ar:'الأعمال المنزلية',c:'#f08a00',
+words:`broom|مكنسة|🧹
+bucket|دلو|🪣
+comic book|مجلة مصوّرة|📖
+trash can|سلة المهملات|🗑️
+get up|ينهض|🧍
+wake up|يستيقظ|⏰
+get dressed|يرتدي ملابسه|👕
+catch the bus|يلحق بالحافلة|🚌
+make the bed|يرتّب السرير|🛏️
+set the table|يجهّز المائدة|🍽️
+clear the table|يرفع الأطباق عن المائدة|🧽
+wash the dishes|يغسل الصحون|🫧
+sweep the floor|يكنس الأرض|🧹🏠
+take out the trash|يُخرج القمامة|🚮
+feed the animals|يُطعم الحيوانات|🐔
+cut the grass|يقصّ العشب|🌱
+leaves|أوراق الشجر|🍂`,
+sent:['What are you doing?','I am reading a comic book.','I always read comic books.','Can you sweep the floor for me?','She is washing the dishes now.','He gets up at seven every day.','Can I take out the trash for you?'],
+gram:['She ___ comic books every day.|reads|is reading|read','Look! He ___ the bus now.|is catching|catches|catch','What ___ you doing?|are|do|is','___ you sweep the floor for me?|Can|Do|Are','I am ___ the dishes now.|washing|wash|washes','He doesn\'t ___ the bus to school.|catch|catches|catching','They ___ their grandparents every Friday.|visit|are visiting|visiting']},
+{id:'3',n:'3',en:'Stories',ar:'القصص',c:'#7a4fd6',
+words:`call|يتصل|📞
+carry|يحمل|📦
+clap|يصفّق|👏
+climb|يتسلّق|🧗
+cry|يبكي|😢
+dream|يحلم|💭
+fix|يُصلح|🔧
+invite|يدعو|💌
+jump|يقفز|🤸
+laugh|يضحك|😂
+plant|يزرع|🌱
+push|يدفع|🛒
+shout|يصرخ|📢
+score|يسجّل هدفاً|⚽
+wait|ينتظر|⏳
+water|يسقي|🪴
+polite|مؤدّب|🙇
+young|صغير السن|👶
+old|كبير السن|👴`,
+sent:['He jumped and shouted.','She didn\'t laugh.','He scored a goal yesterday.','Did you play with your sister?','Yes, I did.','We carried him around the field.','Did she win? No, she didn\'t.'],
+gram:['He ___ a goal yesterday.|scored|scores|score','She didn\'t ___ at my joke.|laugh|laughed|laughing','___ you play with your sister?|Did|Do|Was','Did she win? No, she ___.|didn\'t|doesn\'t|wasn\'t','We ___ him around the field.|carried|carryed|carry','They ___ for the bus yesterday.|waited|waitted|wait','Did you call Grandma? Yes, I ___.|did|do|was']},
+{id:'4',n:'4',en:'After-School Fun',ar:'مرح بعد المدرسة',c:'#2a7de1',
+words:`catch a ball|يلتقط الكرة|🥎
+dress up|يتنكّر|🦸
+go shopping|يتسوّق|🛍️
+hide|يختبئ|🫣
+inside|في الداخل|🏠
+outside|في الخارج|🌳
+make a model|يصنع مجسّماً|🛩️
+listen to music|يستمع إلى الموسيقى|🎧
+play board games|يلعب ألعاب الطاولة|🎲
+play the piano|يعزف البيانو|🎹
+play video games|يلعب ألعاب الفيديو|🎮
+read books|يقرأ الكتب|📚
+see a movie|يشاهد فيلماً|🎬
+take a photo|يلتقط صورة|📷
+watch TV|يشاهد التلفاز|📺
+write stories|يكتب قصصاً|✍️
+quickly|بسرعة|🐇
+slowly|ببطء|🐢
+quietly|بهدوء|🤫
+loudly|بصوت عالٍ|🔊
+happily|بسعادة|😊
+carefully|بحذر|🧐`,
+sent:['Did you go shopping on Saturday?','Yes, I went shopping with my mother.','I didn\'t play football.','I watched TV all day.','She plays the piano quietly.','He runs very quickly.','We played board games inside.'],
+gram:['Did you go shopping? Yes, I ___ shopping.|went|goed|go','I didn\'t ___ TV yesterday.|watch|watched|watching','She plays the piano ___.|quietly|quiet|quieter','He runs very ___.|quickly|quick|quicker','We ___ a movie last weekend.|saw|seed|see','Did they play video games? No, they ___.|didn\'t|don\'t|weren\'t','Please walk ___.|carefully|careful|care']},
+{id:'5',n:'5',en:'Outdoor Fun',ar:'مرح في الطبيعة',c:'#1fa45a',
+words:`cave|كهف|🕳️
+countryside|الريف|🏡
+desert|صحراء|🏜️
+forest|غابة|🌲
+hill|تلّ|⛰️
+island|جزيرة|🏝️
+lake|بحيرة|🛶
+mountain|جبل|🏔️
+waterfall|شلّال|💦
+earth|الأرض|🌍
+fields|حقول|🌾
+deep|عميق|🌊
+far|بعيد|🔭
+close|قريب|👣
+scary|مخيف|👻
+safe|آمن|🛡️
+theme park|مدينة ملاهٍ|🎡
+roller coaster|قطار الملاهي|🎢`,
+sent:['I decided to go to the countryside.','We went walking around the lake.','Could you swim when you were five?','Yes, I could.','I couldn\'t ride a horse when I was five.','The waterfall is very high.'],
+gram:['I decided ___ to the countryside.|to go|going|go','We went ___ around the lake.|walking|to walk|walk','Could you swim when you were five? Yes, I ___.|could|can|did','I ___ ride a horse when I was five.|couldn\'t|can\'t|don\'t','I want ___ the mountain.|to climb|climbing|climb','Don\'t forget ___ water.|to bring|bringing|bring']},
+{id:'6',n:'6',en:'House Accidents',ar:'حوادث المنزل',c:'#d63a3a',
+words:`headache|صداع|🤕
+toothache|ألم الأسنان|🦷
+stomachache|ألم المعدة|🤢
+earache|ألم الأذن|👂
+cough|يسعل|😷
+band aid|لاصق جروح|🩹
+medicine|دواء|💊
+sick|مريض|🤒
+fall|يسقط|💥
+hurt|يؤلم|😣
+X-ray|صورة أشعة|🩻
+back|ظهر|🦴
+upstairs|في الطابق العلوي|🔼
+downstairs|في الطابق السفلي|🔽
+put on|يلبس|🧤
+take off|يخلع|👟
+take care|اعتنِ بنفسك|🤗`,
+sent:['What\'s the matter?','I have a headache.','You have to sit down and wait.','You should take this medicine.','You shouldn\'t play outside today.','I have something in my eye.','There\'s nothing wrong.'],
+gram:['You ___ take this medicine.|should|shouldn\'t|aren\'t','You are sick. You ___ play outside today.|shouldn\'t|should|must','You have ___ sit down and wait.|to|for|at','I have ___ in my eye.|something|anything|nothing','I don\'t see ___ in your eye.|anything|something|everything','My head, my back, my leg! ___ hurts!|Everything|Nothing|Anything','What\'s the ___? I have a headache.|matter|wrong|sick']},
+{id:'7',n:'7',en:'Wildlife',ar:'الحياة البرية',c:'#b8731d',
+words:`elephant|فيل|🐘
+giraffe|زرافة|🦒
+kangaroo|كنغر|🦘
+lion|أسد|🦁
+panda|باندا|🐼
+polar bear|دبّ قطبي|🐻‍❄️
+tiger|نمر|🐯
+tortoise|سلحفاة|🐢
+bear|دبّ|🐻
+jungle|غابة استوائية|🌴
+asleep|نائم|💤
+brave|شجاع|🦸
+fast|سريع|🐆
+slow|بطيء|🐌
+friendly|ودود|🤗
+frightened|خائف|😱
+smart|ذكي|🧠
+tall|طويل|📏
+pretty|جميل|🦋
+danger|خطر|⚠️`,
+sent:['That\'s the vet who works in the zoo.','This is where the pandas live.','The tiger makes me feel frightened.','Cats walk more quietly than horses.','The giraffe is the tallest animal.','The tortoise is very slow.'],
+gram:['That\'s the vet ___ works in the zoo.|who|which|where','This is the place ___ the pandas live.|where|who|which','The tiger is the animal ___ makes me feel frightened.|that|who|where','Cats walk ___ than horses.|more quietly|quietly|most quietly','The giraffe is the ___ animal.|tallest|taller|tall','A cheetah runs ___ than a lion.|faster|fast|fastest']},
+{id:'8',n:'8',en:'Weather',ar:'الطقس',c:'#1aa3c9',
+words:`cloud|سحابة|☁️
+cloudy|غائم|🌥️
+cold|بارد|🥶
+hot|حار|🥵
+warm|دافئ|🌤️
+cool|منعش / بارد قليلاً|🍃
+ice|جليد|🧊
+rain|مطر|🌧️
+rainbow|قوس قزح|🌈
+sky|سماء|🪁
+snow|ثلج|❄️
+sun|شمس|☀️
+sunny|مشمس|😎
+wind|رياح|💨
+windy|عاصف|🌬️
+season|فصل من السنة|📅
+spring|الربيع|🌷
+fall|الخريف|🍁
+temperature|درجة الحرارة|🌡️
+weather|الطقس|⛅`,
+sent:['What\'s the weather going to be like?','It\'s going to be cold.','It isn\'t going to rain.','What was the weather like yesterday?','It was cloudy.','It is snowy today.'],
+gram:['It\'s going ___ cold this afternoon.|to be|be|being','It isn\'t going to ___.|rain|rains|raining','What ___ the weather like yesterday?|was|is|were','It ___ cloudy yesterday.|was|is|be','What\'s the weather like today? It ___ snowy.|is|was|were','Are you going to ___ your coat?|wear|wearing|wears']},
+{id:'g',n:'G',en:'Goodbye!',ar:'وداعاً',c:'#e8197d',
+words:`vacation|إجازة|🏖️
+goodbye|وداعاً|👋
+bags|حقائب|🧳
+island|جزيرة|🏝️
+mountain|جبل|🏔️
+kitten|قطة صغيرة|🐱
+monkey|قرد|🐒
+grandma|جدّة|👵
+grandpa|جدّ|👴
+school|مدرسة|🏫
+fun|ممتع|🥳
+draw|يرسم|🎨
+today|اليوم|📆`,
+sent:['We love our vacations!','We\'re going on vacation.','Our bags are packed.','We\'re going to sleep on a mountain.','It\'s going to be so cool!','We won\'t forget any of you!'],
+gram:['We\'re going ___ sleep on a mountain.|to|for|at','We ___ going on vacation!|are|is|am','Yesterday it ___ windy.|was|is|were','I decided ___ to the island.|to go|going|go','Our bags ___ packed.|are|is|be','We won\'t forget ___ of you!|any|some|every']}
+];
+const RULES={
+w:[{t:'الماضي من فعل to be: was و were',ar:'نستخدم was و were عندما نتكلم عن شيء حدث في الماضي. نستخدم was مع I و he و she و it، ونستخدم were مع you و we و they.',ex:['I [was] happy yesterday.','She [was] surprised.','We [were] at the party.','They [were] excited.'],tip:'في النفي: wasn\'t و weren\'t',chk:['He ___ afraid of the dog.|was|were','You ___ brilliant yesterday!|were|was','I ___ at school.|was|were']},
+{t:'المقارنة: ‎-er و the ‎-est',ar:'للمقارنة بين شيئين نضيف er للصفة القصيرة ثم than. ولنقول إن شيئاً هو الأفضل بين الجميع نكتب the ونضيف est. أما الصفة الطويلة فنضع قبلها more أو the most.',ex:['A lion is [bigger than] a cat.','The giraffe is [the tallest] animal.','Football is [more exciting than] TV.','This is [the most beautiful] day.'],tip:'كلمة شاذة: good ← better ← the best',chk:['An elephant is ___ than a dog.|bigger|biggest','It was ___ day ever!|the best|the good','A tiger is ___ than a rabbit.|more dangerous|dangerouser']}],
+'1':[{t:'كم مرة؟ How often',ar:'نسأل بـ How often لنعرف كم مرة نفعل شيئاً. ونجيب بكلمات التكرار، وتأتي قبل الفعل: always تعني دائماً (100%)، و usually عادةً، و sometimes أحياناً، و rarely نادراً، و never أبداً (0%).',ex:['[How often] do you walk in the park?','I [always] walk in the morning.','She [sometimes] has a cold.','I [never] forget to feed the cat.'],tip:'always ‏100% ← usually ← sometimes ← rarely ← never ‏0%',chk:['I brush my teeth every day. I ___ brush my teeth.|always|never','I don\'t eat fish at all. I ___ eat fish.|never|usually','___ do you visit your aunt?|How often|Whose']},
+{t:'ضمائر الملكية: mine و yours',ar:'بدلاً من أن نقول my book نقول mine فقط. تأتي هذه الكلمات وحدها بدون اسم بعدها. ونسأل عن صاحب الشيء بكلمة Whose.',ex:['[Whose] rabbit is this?','It\'s [mine].','Is this pen [yours]?','It\'s [his]. It\'s [hers].','It wasn\'t [ours]. It was [theirs].'],tip:'my ← mine · your ← yours · her ← hers · our ← ours · their ← theirs',chk:['This is my bag. It\'s ___.|mine|my','That\'s her kitten. It\'s ___.|hers|her','___ parrot is this? It\'s Ali\'s.|Whose|Who']}],
+'2':[{t:'العادة أم الآن؟',ar:'نستخدم المضارع البسيط للعادات والروتين (every day و always)، ونضيف s للفعل مع he و she و it. ونستخدم المضارع المستمر لما يحدث الآن (now و Look!)، ويتكوّن من am أو is أو are ثم الفعل مع ing.',ex:['She [reads] comic books every day.','She [is reading] a comic book now.','He [doesn\'t catch] the bus.','[Are] they [visiting] Grandma now?'],tip:'every day = عادة  ·  now = الآن',chk:['I ___ my bed every morning.|make|am making','Look! Mom ___ the dishes.|is washing|washes','What ___ you doing now?|are|do']},
+{t:'الطلب بلطف: Can you…?',ar:'نطلب من غيرنا شيئاً بلطف بـ Can you…? ونعرض المساعدة بـ Can I … for you? ونرد بـ Sure! أو Sorry, I can\'t.',ex:['[Can you] sweep the floor for me?','[Can I] take out the trash for you?','[Sure!] / [Of course!]'],tip:'لا تنسَ كلمة please',chk:['___ you help me, please?|Can|Do','Can I set the table for you? ___|Sure!|Yes, I do.']}],
+'3':[{t:'الماضي البسيط: ‎-ed',ar:'للحديث عن الماضي (yesterday و last week) نضيف ed للفعل. إذا انتهى الفعل بحرف e نضيف d فقط. وإذا انتهى بحرف ساكن ثم y نحوّل y إلى i ونضيف ed. وللنفي نكتب didn\'t ثم الفعل الأصلي.',ex:['play ← [played]','dance ← [danced]','carry ← [carried]','He [didn\'t laugh].'],tip:'didn\'t + الفعل بدون ed',chk:['Yesterday I ___ football.|played|play','She ___ the baby.|carried|carryed','He didn\'t ___ the window.|fix|fixed']},
+{t:'السؤال عن الماضي: Did…?',ar:'نسأل عن الماضي بـ Did ثم الشخص ثم الفعل الأصلي. والإجابة القصيرة: Yes, I did أو No, I didn\'t.',ex:['[Did] you [play] with your sister?','Yes, I [did].','[Did] she [win]?','No, she [didn\'t].'],tip:'بعد Did يرجع الفعل لأصله',chk:['___ they jump?|Did|Do','Did he score? No, he ___.|didn\'t|did','Did you call Grandma? ___|Yes, I did.|Yes, I do.']}],
+'4':[{t:'الأفعال الشاذة في الماضي',ar:'بعض الأفعال لا نضيف لها ed، بل تتغيّر كلها في الماضي. لكن في النفي والسؤال نرجع للفعل الأصلي.',ex:['go ← [went]','see ← [saw]','make ← [made]','take ← [took]','I [didn\'t go] shopping.'],tip:'have ← had · write ← wrote · read ← read',chk:['Yesterday we ___ to the park.|went|goed','Yes, I ___ a great movie.|saw|seed','I didn\'t ___ a photo.|take|took']},
+{t:'كيف نفعلها؟ ‎-ly',ar:'لنصف كيف نفعل الشيء نضيف ly للصفة: quick تصبح quickly، و quiet تصبح quietly. وإذا انتهت الصفة بحرف y نحوّله إلى i: happy تصبح happily. وتأتي بعد الفعل.',ex:['He runs [quickly].','She plays the piano [quietly].','They laughed [happily].','Walk [carefully]!'],tip:'slow ← slowly · loud ← loudly · lucky ← luckily',chk:['The tortoise walks ___.|slowly|slow','The kids played ___.|happily|happyly','The baby is asleep. Talk ___.|quietly|loudly']}],
+'5':[{t:'to + فعل أم فعل + ing؟',ar:'بعض الأفعال يأتي بعدها to ثم الفعل، مثل decide و want و forget و try. وبعضها يأتي بعده الفعل مع ing، مثل go (go walking و go fishing) و finish. أما prefer فيصلح معها الاثنان.',ex:['I [decided to go] to the countryside.','We [went walking] around the lake.','Don\'t [forget to bring] water.','I [finished climbing] the hill.'],tip:'decide / want / forget ← to  ·  go / finish ← ing',chk:['I want ___ the cave.|to see|seeing','We went ___ in the lake.|swimming|to swim','She decided ___ the mountain.|to climb|climbing']},
+{t:'could: كنت أستطيع',ar:'could هي ماضي can. نقول بها ما كنا نستطيع فعله في الماضي، و couldn\'t للنفي. ويأتي بعدها الفعل الأصلي.',ex:['I [could] swim when I was six.','I [couldn\'t] ride a horse when I was five.','[Could] you run fast? Yes, I [could].'],tip:'could + الفعل الأصلي',chk:['When I was two, I ___ read.|couldn\'t|can\'t','___ you swim when you were five?|Could|Do','She could ___ when she was four.|ride a bike|rides a bike']}],
+'6':[{t:'يجب، ممنوع، ونصيحة',ar:'have to و must تعنيان يجب. و mustn\'t تعني ممنوع. أما should فهي نصيحة (من الأفضل)، و shouldn\'t تعني من الأفضل ألّا. وبعدها كلها الفعل الأصلي.',ex:['You [have to] sit down and wait.','You [must] stay in bed.','You [mustn\'t] look at screens.','You [should] take this medicine.','You [shouldn\'t] play outside today.'],tip:'must = يجب · mustn\'t = ممنوع · should = نصيحة',chk:['You have a toothache. You ___ see a dentist.|should|shouldn\'t','You ___ touch the hot oven!|mustn\'t|should','He has ___ take his medicine.|to|must']},
+{t:'every و some و any و no',ar:'everything تعني كل شيء، و something شيء ما، و anything أي شيء (في النفي والسؤال)، و nothing لا شيء. ونفس الفكرة مع where: everywhere أي في كل مكان.',ex:['[Everything] hurts.','It hurts [everywhere].','I have [something] in my eye.','I don\'t see [anything].','There\'s [nothing] wrong.'],tip:'don\'t … anything = لا … أي شيء',chk:['I\'m fine. There\'s ___ wrong.|nothing|anything','My head, my legs… ___ hurts!|Everything|Nothing','I don\'t have ___ in my bag.|anything|something']}],
+'7':[{t:'كلمات الربط: who و which و where',ar:'نربط جملتين بكلمة. نستخدم who للأشخاص، و which للأشياء والحيوانات، و that للاثنين، و where للأماكن، و whose للملكية.',ex:['That\'s the vet [who] works in the zoo.','This is the tiger [that] makes me frightened.','A panda is an animal [which] eats bamboo.','This is [where] the pandas live.'],tip:'شخص ← who · شيء ← which · مكان ← where',chk:['He is the man ___ feeds the lions.|who|where','The zoo is the place ___ animals live.|where|who','A kangaroo is an animal ___ jumps.|which|who']},
+{t:'مقارنة الأفعال: faster و more quietly',ar:'لنقارن طريقة فعل الشيء: إذا كانت الكلمة قصيرة نضيف er، مثل fast تصبح faster. وإذا انتهت بـ ly نضع قبلها more، مثل more quietly. وللأكثر بين الجميع نستخدم the most.',ex:['A cheetah runs [faster than] a lion.','Cats walk [more quietly than] horses.','The tortoise moves [the most slowly].'],tip:'fast ← faster · quietly ← more quietly',chk:['A horse runs ___ than a tortoise.|faster|fast','A cat walks ___ than an elephant.|more quietly|quietlier']}],
+'8':[{t:'توقّع الطقس: going to',ar:'نتوقّع المستقبل بـ am أو is أو are ثم going to ثم الفعل. وللنفي isn\'t going to. ونسأل: What\'s the weather going to be like?',ex:['It\'s [going to be] cold.','It [isn\'t going to] rain.','[Is] it [going to] snow?','What\'s the weather [going to be] like?'],tip:'is + going to + الفعل الأصلي',chk:['Look at the clouds! It ___ rain.|is going to|going to','It ___ going to be sunny tomorrow.|is|are','We\'re going to ___ to the beach.|go|going']},
+{t:'الطقس اليوم وأمس',ar:'نصف طقس اليوم بـ It is، وطقس أمس بـ It was. ونصنع صفات الطقس بإضافة y للاسم: sun تصبح sunny، و cloud تصبح cloudy، و wind تصبح windy.',ex:['What\'s the weather like today? It [is] snowy.','What [was] the weather like yesterday?','It [was] cloudy.','sun ← sun[ny] · wind ← wind[y]'],tip:'today ← is · yesterday ← was',chk:['Yesterday it ___ windy.|was|is','There are clouds. It\'s ___.|cloudy|cloud','Today it ___ hot.|is|was']}],
+g:[{t:'مراجعة: خطط الإجازة',ar:'نتكلم عن خططنا بـ going to، ونقول ما قررنا فعله بـ decided to.',ex:['We\'re [going to] sleep on a mountain.','We [decided to] go to an island.','It\'s [going to] be so cool!'],tip:'going to + الفعل الأصلي',chk:['We\'re going ___ visit Grandma.|to|for','They decided ___ shopping.|to go|going','It ___ going to be fun!|is|are']}]
+};
+const READ={
+w:{t:'Back to School',ar:'العودة إلى المدرسة',p:'🎒',text:'Hi! My name is Sara. Today is my first day back to school. I was a little afraid in the morning. But my new teacher was very kind. My classroom is beautiful and bright. We had a small celebration for the new year. It was an exciting day!',q:['How did Sara feel in the morning?|afraid|happy|tired','Who was very kind?|her teacher|her cat|her brother','The classroom is ___.|beautiful|dirty|small','What did they have?|a celebration|a picnic|a test']},
+'1':{t:'A Family Gathering',ar:'لقاء عائلي',p:'👨‍👩‍👧‍👦',text:'Every Friday, Faisal visits his grandparents. His aunt and uncle always come too. His cousin Nora is very chatty. She talks all the time! Faisal\'s grandpa is old, but he is very strong. His grandma is kind and helpful. She sometimes makes a big cake. Faisal loves his family!',q:['How often does Faisal visit his grandparents?|every Friday|every Monday|never','Who is chatty?|Nora|Grandpa|Faisal','Grandpa is old, but he is ___.|strong|weak|lazy','What does Grandma sometimes make?|a big cake|a model|a photo']},
+'2':{t:'Saturday Chores',ar:'أعمال يوم السبت',p:'🧹',text:'It\'s Saturday. Omar gets up at eight o\'clock. First, he makes his bed. Then he feeds the animals in the garden. His sister Lina is sweeping the floor now. Mom asks, "Can you take out the trash, Omar?" "Sure!" says Omar. After the chores, they read comic books together.',q:['What time does Omar get up?|at eight|at six|at ten','What is Lina doing now?|sweeping the floor|washing the dishes|reading','What does Mom ask Omar?|to take out the trash|to make a cake|to catch the bus','What do they do after the chores?|read comic books|watch TV|go shopping']},
+'3':{t:'The Big Game',ar:'المباراة الكبيرة',p:'⚽',text:'Yesterday, Khalid played football with his friends. His team waited for a long time. Then Khalid jumped and kicked the ball. He scored a goal! His friends shouted and clapped. They carried him around the field. Khalid didn\'t cry, but he laughed a lot.',q:['What did Khalid play?|football|the piano|video games','What did Khalid score?|a goal|a point|a prize','What did his friends do?|shouted and clapped|cried|went home','Did Khalid cry?|No, he didn\'t.|Yes, he did.|Yes, he was.']},
+'4':{t:'A Busy Weekend',ar:'عطلة مليئة بالنشاط',p:'🎲',text:'Last weekend, Yousef had a lot of fun. On Saturday, he went shopping with his mom. He saw a new board game and bought it. On Sunday, it rained, so he stayed inside. He played the board game with his sister. She played carefully and won! Then they watched TV quietly.',q:['Who did Yousef go shopping with?|his mom|his dad|his friend','What did he buy?|a board game|a ball|a book','Why did he stay inside on Sunday?|it rained|he was sick|it was hot','Who won the game?|his sister|Yousef|his mom']},
+'5':{t:'A Trip to the Countryside',ar:'رحلة إلى الريف',p:'🏞️',text:'Last summer, Hana\'s family decided to go to the countryside. They went walking in a big forest. They saw a high waterfall and a deep lake. Hana wanted to climb a hill. It was hard, but she didn\'t stop. From the top, she could see fields and a small cave. When she was five, she couldn\'t climb hills. Now she can!',q:['Where did Hana\'s family go?|the countryside|the desert|the city','What did they see?|a waterfall and a lake|a theme park|an island','What did Hana want to climb?|a hill|a tree|a mountain','Could Hana climb hills when she was five?|No, she couldn\'t.|Yes, she could.|Yes, she did.']},
+'6':{t:'Ouch!',ar:'آخ!',p:'🩹',text:'Ali was running downstairs. He fell and hurt his back. "What\'s the matter?" asked Mom. "Everything hurts!" said Ali. They went to the doctor. The doctor took an X-ray. "There\'s nothing wrong," she said. "But you should rest. You mustn\'t run on the stairs!"',q:['What did Ali hurt?|his back|his ear|his tooth','Where did they go?|to the doctor|to the park|to school','What did the doctor take?|an X-ray|a photo|medicine','The doctor said Ali should ___.|rest|run|play outside']},
+'7':{t:'At the Animal Shelter',ar:'في ملجأ الحيوانات',p:'🐼',text:'Dr. Reem is a vet who works at an animal shelter. It is a place where sick animals can stay. Today she is helping a little panda. The panda was frightened, but now it is friendly. Next to it, there is a tortoise which moves very slowly. A kangaroo jumps faster than all the other animals!',q:['What is Dr. Reem\'s job?|a vet|a teacher|a pilot','Who is she helping today?|a little panda|a lion|a parrot','How does the tortoise move?|very slowly|very fast|loudly','Which animal jumps the fastest?|the kangaroo|the panda|the tortoise']},
+'8':{t:'The Weather Report',ar:'النشرة الجوية',p:'🌦️',text:'Good morning! This is the weather report. Yesterday it was cloudy and cool. Today it is sunny and warm. But this afternoon, it is going to be windy. Tomorrow it is going to rain in the morning. After the rain, look up at the sky. You might see a rainbow!',q:['What was the weather like yesterday?|cloudy and cool|hot and sunny|snowy','What is the weather like today?|sunny and warm|rainy|cold','What is it going to be like this afternoon?|windy|snowy|hot','What might you see after the rain?|a rainbow|snow|the moon']},
+g:{t:'Vacation Plans',ar:'خطط الإجازة',p:'🏖️',text:'School is finished! We\'re going on vacation. Our bags are packed. First, we\'re going to visit Grandma and Grandpa. Then we\'re going to sleep on a mountain. We decided to go to an island too. It\'s going to be so much fun!',q:['Is school finished?|Yes, it is.|No, it isn\'t.|Yes, it does.','Who are they going to visit first?|Grandma and Grandpa|their teacher|their cousin','Where are they going to sleep?|on a mountain|in a cave|at school','What else did they decide?|to go to an island|to go shopping|to stay home']}
+};
+const DICT={hi:'مرحباً',my:'لي / خاصتي',name:'اسم',is:'يكون',today:'اليوم',first:'أول / أولاً',day:'يوم',a:'أداة نكرة',little:'قليلاً / صغير',morning:'الصباح',but:'لكن',new:'جديد',teacher:'معلّم',very:'جداً',classroom:'الفصل',and:'و',bright:'مشرق',we:'نحن',had:'كان لدينا',small:'صغير',for:'لـ / من أجل',year:'سنة',it:'هو / هي (لغير العاقل)',was:'كان',every:'كل',friday:'الجمعة',visits:'يزور',visit:'يزور',his:'له / خاصته',too:'أيضاً',she:'هي',talks:'يتكلّم',all:'كل',time:'وقت',he:'هو',grandpa:'جدّ',grandma:'جدّة',sometimes:'أحياناً',makes:'يصنع',big:'كبير',cake:'كعكة',loves:'يحب',family:'عائلة',saturday:'السبت',gets:'يحصل',up:'أعلى',at:'عند / في',eight:'ثمانية',"o'clock":'الساعة',then:'ثم',feeds:'يُطعم',animals:'حيوانات',garden:'حديقة',sister:'أخت',sweeping:'يكنس',floor:'أرضية',now:'الآن',mom:'أمي',asks:'يسأل',can:'يستطيع',you:'أنت',take:'يأخذ',out:'خارج',trash:'قمامة',sure:'بالتأكيد',says:'يقول',after:'بعد',chores:'الأعمال المنزلية',they:'هم',read:'يقرأ',together:'معاً',yesterday:'أمس',played:'لعب',football:'كرة القدم',with:'مع',friends:'أصدقاء',team:'فريق',waited:'انتظر',long:'طويل',jumped:'قفز',kicked:'ركل',ball:'كرة',scored:'سجّل',goal:'هدف',shouted:'صرخ',clapped:'صفّق',carried:'حمل',him:'هو (مفعول)',around:'حول',field:'ملعب',"didn't":'لم',cry:'يبكي',laughed:'ضحك',lot:'كثير',last:'الماضي / الأخير',weekend:'عطلة نهاية الأسبوع',fun:'متعة',on:'على / في',went:'ذهب',shopping:'التسوّق',saw:'رأى',game:'لعبة',bought:'اشترى',sunday:'الأحد',rained:'أمطرت',so:'لذلك',stayed:'بقي',her:'لها / هي',won:'فاز',watched:'شاهد',summer:'الصيف',decided:'قرّر',to:'إلى',go:'يذهب',walking:'المشي',in:'في',wanted:'أراد',hard:'صعب',stop:'يتوقف',from:'من',top:'القمة',could:'استطاع',see:'يرى',when:'عندما',five:'خمسة',"couldn't":'لم يستطع',hills:'تلال',running:'يجري',fell:'سقط',hurt:'آذى / يؤلم',back:'ظهر',"what's":'ما هو',matter:'الأمر',asked:'سأل',everything:'كل شيء',hurts:'يؤلم',said:'قال',doctor:'طبيب',took:'أخذ',"there's":'يوجد',nothing:'لا شيء',wrong:'خطأ / مشكلة',should:'ينبغي',rest:'يرتاح',"mustn't":'ممنوع',run:'يجري',stairs:'الدرج',vet:'طبيب بيطري',who:'الذي (للأشخاص)',works:'يعمل',shelter:'ملجأ',place:'مكان',where:'حيث / أين',sick:'مريض',stay:'يبقى',helping:'يساعد',next:'بجانب / التالي',there:'هناك',which:'الذي (للأشياء)',moves:'يتحرّك',jumps:'يقفز',faster:'أسرع',than:'من (للمقارنة)',other:'أخرى',good:'جيد',this:'هذا',report:'تقرير / نشرة',afternoon:'بعد الظهر',going:'ذاهب / سوف',be:'يكون',tomorrow:'غداً',look:'انظر',might:'قد',school:'مدرسة',finished:'انتهى',"we're":'نحن',our:'لنا',bags:'حقائب',are:'يكونون',packed:'محزومة',sleep:'ينام',island:'جزيرة',"it's":'إنه',much:'كثير',of:'من',the:'الـ (أداة تعريف)',an:'أداة نكرة',i:'أنا',"faisal's":'الخاص بفيصل',"hana's":'الخاص بهناء',dr:'دكتور',always:'دائماً',come:'يأتي',comic:'مصوّر',books:'كتب',book:'كتاب',board:'لوح / طاولة',tv:'التلفاز',high:'مرتفع','x-ray':'صورة أشعة',animal:'حيوان',sara:'سارة (اسم)',faisal:'فيصل (اسم)',nora:'نورة (اسم)',omar:'عمر (اسم)',lina:'لينا (اسم)',khalid:'خالد (اسم)',yousef:'يوسف (اسم)',hana:'هناء (اسم)',ali:'علي (اسم)',reem:'ريم (اسم)',bought:'اشترى'};
+
+U.forEach(u=>{u.rules=RULES[u.id];u.read=READ[u.id];});
+U.forEach(u=>{u.W=u.words.split('\n').map(l=>{const [en,ar,p]=l.split('|');return{en,ar,p}})});
+
+const ICON={
+spk:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 4V5L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1A9 9 0 0 0 14 3.2z"/></svg>',
+mic:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v7a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.9V22h2v-3.1a7 7 0 0 0 6-6.9h-2z"/></svg>',
+back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>',
+star:f=>`<svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17l-5.9 3.3 1.3-6.5L2.5 9.3l6.6-.8z" fill="${f?'#ffc928':'#cfe3de'}" stroke="${f?'#d9a100':'none'}" stroke-width="1"/></svg>`,
+cards:'<svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="5" width="12" height="15" rx="2"/><rect x="9" y="3" width="12" height="15" rx="2" opacity=".55"/></svg>',
+ear:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7h2a5 5 0 0 1 10 0c0 2-1 3-2.2 4.1-1.3 1.2-2.8 2.5-2.8 5A2.9 2.9 0 0 1 9 21H7v2h2a4.9 4.9 0 0 0 5-4.9c0-1.5.9-2.3 2.1-3.4C17.6 13.4 19 12 19 9a7 7 0 0 0-7-7zm0 4a3 3 0 0 0-3 3h2a1 1 0 0 1 2 0c0 1-2 1.5-2 4h2c0-1.5 2-2 2-4a3 3 0 0 0-3-3z"/></svg>',
+match:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="5" cy="6" r="2.5"/><circle cx="5" cy="18" r="2.5"/><circle cx="19" cy="6" r="2.5"/><circle cx="19" cy="18" r="2.5"/><path d="M7.5 6.5l9 11M7.5 17.5l9-11"/></svg>',
+abc:'<svg viewBox="0 0 24 24" fill="currentColor"><text x="12" y="17" text-anchor="middle" font-size="12" font-weight="800" font-family="system-ui">ABC</text></svg>',
+build:'<svg viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="8" width="6" height="8" rx="1.5"/><rect x="9" y="8" width="6" height="8" rx="1.5" opacity=".7"/><rect x="16" y="8" width="6" height="8" rx="1.5" opacity=".45"/></svg>',
+book:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 5c3-1.5 6.5-1.5 9.2.6V20c-2.7-2-6.2-2-9.2-.6zM22 5c-3-1.5-6.5-1.5-9.2.6V20c2.7-2 6.2-2 9.2-.6z"/></svg>',
+bulb:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2zM9 19h6v1.5a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 20.5z"/></svg>',
+play:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z"/></svg>',
+gram:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M4 7h16M4 12h6M14 12h6M4 17h10"/><path d="M10 12h4" stroke-dasharray="1 2.5"/></svg>'
+};
+const G=[
+{k:'learn',ar:'تعلّم الكلمات',d:'بطاقات تسمع فيها كل كلمة ومعناها',ic:'cards',c:'#0f8a7a',sk:'قراءة واستماع'},
+{k:'read',ar:'درس القراءة',d:'قصة قصيرة تقرؤها معي وتلمس كلماتها، ثم أسئلة',ic:'book',c:'#b8731d',sk:'قراءة وفهم'},
+{k:'rules',ar:'درس القواعد',d:'شرح بسيط للقاعدة ثم تدريب عليها',ic:'bulb',c:'#2a3f8f',sk:'قواعد'},
+{k:'listen',ar:'اسمع واختر',d:'اسمع الكلمة واختر صورتها',ic:'ear',c:'#2a7de1',sk:'استماع'},
+{k:'match',ar:'طابق المعنى',d:'اربط الكلمة الإنجليزية بمعناها',ic:'match',c:'#7a4fd6',sk:'قراءة'},
+{k:'spell',ar:'تهجئة الكلمة',d:'رتّب الحروف لتكتب الكلمة',ic:'abc',c:'#f08a00',sk:'كتابة'},
+{k:'say',ar:'انطق الكلمة',d:'اسمع وقلّد النطق بصوتك',ic:'mic',c:'#e8197d',sk:'نطق'},
+{k:'build',ar:'رتّب الجملة',d:'اسمع الجملة ورتّب كلماتها',ic:'build',c:'#1fa45a',sk:'تركيب جمل'},
+{k:'gram',ar:'أكمل الجملة',d:'اختر الكلمة الصحيحة في الفراغ',ic:'gram',c:'#d63a3a',sk:'قواعد'}
+];
+
+/* storage */
+let P={};try{P=JSON.parse(localStorage.getItem('tg1-progress')||'{}')}catch(e){P={}}
+const save=()=>{try{localStorage.setItem('tg1-progress',JSON.stringify(P))}catch(e){}};
+const st=(u,g)=>(P[u]&&P[u][g])||0;
+const uStars=u=>G.filter(g=>g.k!=='learn').reduce((s,g)=>s+st(u.id,g.k),0);
+const MAXU=(G.length-1)*3;
+
+/* helpers */
+const $=s=>document.querySelector(s);
+const app=$('#app');
+const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+const starRow=(n,m=3)=>'<span class="stars">'+Array.from({length:m},(_,i)=>ICON.star(i<n)).join('')+'</span>';
+let voice=null;
+const pickVoice=()=>{try{const v=speechSynthesis.getVoices();voice=v.find(x=>/en-US/i.test(x.lang)&&/female|samantha|google/i.test(x.name))||v.find(x=>/^en/i.test(x.lang))||null}catch(e){}};
+try{pickVoice();speechSynthesis.onvoiceschanged=pickVoice}catch(e){}
+const say=(t,slow)=>{try{speechSynthesis.cancel();const m=new SpeechSynthesisUtterance(t);m.lang='en-US';if(voice)m.voice=voice;m.rate=slow?.42:.68;m.pitch=1.05;speechSynthesis.speak(m)}catch(e){}};
+let AC=null;
+const beep=ok=>{try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();const t=AC.currentTime;(ok?[523,659,784]:[220,180]).forEach((f,i)=>{const o=AC.createOscillator(),g=AC.createGain();o.type=ok?'triangle':'square';o.frequency.value=f;g.gain.setValueAtTime(.0001,t+i*.09);g.gain.exponentialRampToValueAtTime(ok?.18:.07,t+i*.09+.02);g.gain.exponentialRampToValueAtTime(.0001,t+i*.09+.2);o.connect(g).connect(AC.destination);o.start(t+i*.09);o.stop(t+i*.09+.22)})}catch(e){}};
+const PRAISE=['أحسنت!','ممتاز!','رائع!','بطل!','شاطر!','Great job!','Well done!'];
+const praise=()=>PRAISE[Math.random()*PRAISE.length|0];
+
+/* screens */
+const MASCOT=`<svg class="mascot" viewBox="0 0 100 100"><ellipse cx="50" cy="92" rx="26" ry="5" fill="#0005"/><path d="M50 6l11 22 24 3-17 17 4 24-22-11-22 11 4-24L15 31l24-3z" fill="#ffc928" stroke="#d9a100" stroke-width="3" stroke-linejoin="round"/><circle cx="42" cy="42" r="4" fill="#10322d"/><circle cx="58" cy="42" r="4" fill="#10322d"/><circle cx="43.5" cy="40.5" r="1.4" fill="#fff"/><circle cx="59.5" cy="40.5" r="1.4" fill="#fff"/><path d="M42 52q8 7 16 0" stroke="#10322d" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="36" cy="50" r="3.5" fill="#e8197d" opacity=".45"/><circle cx="64" cy="50" r="3.5" fill="#e8197d" opacity=".45"/></svg>`;
+const WAVE='<svg class="wave" viewBox="0 0 400 46" preserveAspectRatio="none"><path d="M0 30 Q50 6 100 26 T200 24 T300 26 T400 18 V46 H0z" fill="var(--bg)"/></svg>';
+
+function home(){
+  const tot=U.reduce((s,u)=>s+uStars(u),0);
+  app.innerHTML=`<header class="top"><div class="in">${MASCOT}<div><h1>مغامرة الإنجليزي</h1><p>ألعاب كتاب <span class="en">Top Goal 1</span> — اختر وحدة وابدأ اللعب</p></div><div class="total">${ICON.star(1).replace('<svg','<svg width="22" height="22"')} <span class="en">${tot}</span></div></div>${WAVE}</header>
+  <div class="wrap"><div class="grid">${U.map((u,i)=>{const s=uStars(u);return`<button class="unit" data-u="${i}"><span class="num" style="background:${u.c}">${u.n}</span><b>${u.ar}</b><small class="en" style="text-align:end">${u.en}</small><span class="bar"><i style="width:${s/MAXU*100}%"></i></span></button>`}).join('')}</div>
+  <p class="note">النجوم تُحفظ على هذا الجهاز. كل لعبة تعطي حتى ٣ نجوم.</p></div>`;
+  app.querySelectorAll('.unit').forEach(b=>b.onclick=()=>unit(U[b.dataset.u]));
+  scrollTo(0,0);
+}
+function unit(u){
+  app.innerHTML=`<div class="wrap"><div class="sub"><button class="back" aria-label="رجوع">${ICON.back}</button><div><h2>${u.ar}</h2><small class="en" style="color:var(--soft)">Unit ${u.n} · ${u.en}</small></div><div class="total" style="background:var(--card);color:var(--ink);box-shadow:0 4px 0 var(--line)">${ICON.star(1).replace('<svg','<svg width="20" height="20"')} <span class="en">${uStars(u)}/${MAXU}</span></div></div>
+  <div class="games">${G.map(g=>`<button class="game" data-g="${g.k}"><span class="ic" style="background:${g.c}">${ICON[g.ic]}</span><span><b>${g.ar}</b><small>${g.d}</small>${g.k==='learn'?`<small style="color:${g.c};font-weight:800">ابدأ من هنا</small>`:starRow(st(u.id,g.k))}</span></button>`).join('')}</div></div>`;
+  app.querySelector('.back').onclick=home;
+  app.querySelectorAll('.game').forEach(b=>b.onclick=()=>start(u,b.dataset.g));
+  scrollTo(0,0);
+}
+
+/* game engine */
+let R=null;
+function start(u,k){
+  const W=u.W;let items;
+  if(k==='learn')return learn(u);
+  if(k==='read')return readView(u);
+  if(k==='rules'){items=[];u.rules.forEach((r,ri)=>{items.push({type:'rule',r,ri});sh(r.chk).forEach(c=>items.push({type:'chk',s:c,r}))})}
+  if(k==='readq')items=u.read.q.map(x=>({type:'q',s:x}));
+  if(k==='listen'||k==='match')items=sh(W).slice(0,8);
+  if(k==='spell')items=sh(W.filter(w=>/^[a-z]{3,11}$/i.test(w.en))).slice(0,6);
+  if(k==='say')items=sh(W).slice(0,6);
+  if(k==='build')items=sh(u.sent);
+  if(k==='gram')items=sh(u.gram);
+  R={u,k,sk:k==='readq'?'read':k,items,i:0,first:0,tried:false,n:items.filter(x=>x.type!=='rule').length};
+  round();
+}
+function shell(inner){
+  const g=G.find(x=>x.k===R.sk);
+  app.innerHTML=`<div class="wrap"><div class="sub"><button class="back" aria-label="رجوع">${ICON.back}</button><div><h2>${g.ar}</h2><small style="color:var(--soft)">${R.u.ar} · مهارة: ${g.sk}</small></div></div>
+  <div class="play"><div class="prog"><span class="en">${R.i+1}/${R.items.length}</span><span class="bar"><i style="width:${R.i/R.items.length*100}%;background:${g.c}"></i></span></div>${inner}<div class="toast" id="toast"></div></div></div>`;
+  app.querySelector('.back').onclick=()=>{try{speechSynthesis.cancel()}catch(e){}unit(R.u)};
+}
+const toast=(ok,t)=>{const e=$('#toast');e.className='toast '+(ok?'ok':'no');e.textContent=t};
+function good(speak){
+  if(!R.tried)R.first++;
+  beep(true);toast(true,praise());
+  if(speak)setTimeout(()=>say(speak),250);
+  setTimeout(next,speak&&speak.length>14?2300:1400);
+}
+function bad(){R.tried=true;beep(false);toast(false,'حاول مرة أخرى')}
+function next(){R.i++;R.tried=false;R.lock=false;if(R.i>=R.items.length)return end();round()}
+function wrongs(t,n){return sh(R.u.W.filter(w=>w.en!==t.en&&w.p!==t.p)).slice(0,n)}
+
+function round(){
+  const t=R.items[R.i],k=R.k;
+  if(k==='rules'||k==='readq')return lessonRound(t);
+  if(k==='listen'){
+    const opts=sh([t,...wrongs(t,3)]);
+    shell(`<p class="ask">اسمع جيداً، ثم اختر الصورة الصحيحة</p><button class="spk" id="s1">${ICON.spk} اسمع</button><button class="spk alt" id="s2">ببطء</button>
+    <div class="opts">${opts.map(o=>`<button class="opt" data-v="${esc(o.en)}"><span class="e">${o.p}</span><span class="en">${o.en}</span></button>`).join('')}</div>`);
+    $('#s1').onclick=()=>say(t.en);$('#s2').onclick=()=>say(t.en,1);
+    setTimeout(()=>say(t.en),300);
+    bindOpts(t.en,null);
+  }
+  if(k==='match'){
+    const rev=R.i%2===1,opts=sh([t,...wrongs(t,3)]);
+    shell(rev?`<p class="ask">ما الكلمة الإنجليزية لهذا المعنى؟</p><div class="pic">${t.p}</div><div class="big">${t.ar}</div>
+      <div class="opts">${opts.map(o=>`<button class="opt en" data-v="${esc(o.en)}">${o.en}</button>`).join('')}</div>`
+    :`<p class="ask">اقرأ الكلمة واختر معناها</p><div class="big en">${t.en}</div><button class="spk" id="s1">${ICON.spk} اسمع</button>
+      <div class="opts">${opts.map(o=>`<button class="opt" data-v="${esc(o.en)}">${o.ar}</button>`).join('')}</div>`);
+    if(!rev)$('#s1').onclick=()=>say(t.en);
+    bindOpts(t.en,t.en);
+  }
+  if(k==='spell'){
+    const w=t.en.toLowerCase(),abc='abcdefghijklmnopqrstuvwxyz';
+    const extra=sh(abc.split('').filter(c=>!w.includes(c))).slice(0,w.length>7?2:3);
+    const letters=sh([...w.split(''),...extra]);let fill=[];
+    shell(`<p class="ask">اكتب الكلمة بالإنجليزية</p><div class="pic">${t.p}</div><div class="ar">${t.ar}</div><button class="spk" id="s1">${ICON.spk} اسمع</button>
+    <div class="slots" id="sl"></div><div class="tiles" id="tl">${letters.map((c,i)=>`<button class="tile" data-i="${i}">${c}</button>`).join('')}</div>
+    <div class="row"><button class="spk alt" id="clr">امسح</button><button class="spk pk" id="hint">تلميح</button></div>`);
+    $('#s1').onclick=()=>say(t.en);
+    const draw=()=>{$('#sl').innerHTML=w.split('').map((_,i)=>`<button class="slot ${fill[i]!=null?'f':''}" data-s="${i}">${fill[i]!=null?letters[fill[i]]:''}</button>`).join('');
+      app.querySelectorAll('#tl .tile').forEach(b=>b.classList.toggle('used',fill.includes(+b.dataset.i)));
+      app.querySelectorAll('.slot').forEach(s=>s.onclick=()=>{const i=+s.dataset.s;if(fill[i]!=null){fill=fill.slice(0,i);draw()}})};
+    app.querySelectorAll('#tl .tile').forEach(b=>b.onclick=()=>{if(fill.length>=w.length)return;fill.push(+b.dataset.i);say(letters[+b.dataset.i]);draw();
+      if(fill.length===w.length){const got=fill.map(i=>letters[i]).join('');if(got===w){good(t.en)}else{bad();$('#sl').classList.add('wrong');setTimeout(()=>{fill=[];draw()},700)}}});
+    $('#clr').onclick=()=>{fill=[];draw()};
+    $('#hint').onclick=()=>{R.tried=true;let n=0;while(n<fill.length&&letters[fill[n]]===w[n])n++;fill=fill.slice(0,n);const idx=letters.findIndex((c,i)=>c===w[n]&&!fill.includes(i));if(idx>-1){fill.push(idx);draw()}};
+    draw();
+  }
+  if(k==='say'){
+    const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+    shell(`<p class="ask">اسمع الكلمة، ثم قلها بصوت عالٍ</p><div class="pic">${t.p}</div><div class="big en">${t.en}</div><div class="ar">${t.ar}</div>
+    <div class="row"><button class="spk" id="s1">${ICON.spk} اسمع</button><button class="spk alt" id="s2">ببطء</button>${SR?`<button class="spk pk" id="mic">${ICON.mic} سجّل صوتي</button>`:''}</div>
+    <p class="ask" style="margin-top:16px">هل قلتها مثل الصوت تماماً؟</p><div class="row"><button class="spk" id="yes" style="background:var(--ok);box-shadow:0 4px 0 #157a42">نعم، قلتها</button><button class="spk alt" id="again">سأعيد المحاولة</button></div>`);
+    $('#s1').onclick=()=>say(t.en);$('#s2').onclick=()=>say(t.en,1);
+    setTimeout(()=>say(t.en),300);
+    $('#yes').onclick=()=>good(null);
+    $('#again').onclick=()=>{R.tried=true;say(t.en,1);toast(false,'اسمع ببطء وقلها مرة أخرى')};
+    if(SR)$('#mic').onclick=()=>{try{const r=new SR();r.lang='en-US';r.maxAlternatives=5;toast(true,'أنا أسمعك... تكلّم الآن');
+      r.onresult=e=>{const alts=[...e.results[0]].map(a=>a.transcript.toLowerCase().trim());const tgt=t.en.toLowerCase();if(alts.some(a=>a.includes(tgt)||tgt.includes(a)&&a.length>2))good(null);else{bad();toast(false,'سمعت: '+alts[0]+' — حاول مرة أخرى')}};
+      r.onerror=()=>toast(false,'الميكروفون غير متاح هنا — استخدم زر "نعم، قلتها"');r.start()}catch(e){toast(false,'الميكروفون غير متاح هنا — استخدم زر "نعم، قلتها"')}};
+  }
+  if(k==='build'){
+    const words=t.split(' ');let order;do{order=sh(words.map((_,i)=>i))}while(words.length>1&&order.every((v,i)=>v===i));
+    let pick=[];
+    shell(`<p class="ask">اسمع الجملة ورتّب الكلمات بالترتيب الصحيح</p><button class="spk" id="s1">${ICON.spk} اسمع الجملة</button><button class="spk alt" id="s2">ببطء</button>
+    <div class="line" id="ln"></div><div class="tiles" id="tl">${order.map(i=>`<button class="tile w" data-i="${i}">${esc(words[i])}</button>`).join('')}</div>
+    <div class="row"><button class="spk pk" id="chk">تحقّق</button><button class="spk alt" id="clr">امسح</button></div>`);
+    $('#s1').onclick=()=>say(t);$('#s2').onclick=()=>say(t,1);setTimeout(()=>say(t),300);
+    const draw=()=>{$('#ln').innerHTML=pick.map((i,j)=>`<button class="tile w" data-j="${j}">${esc(words[i])}</button>`).join('');
+      app.querySelectorAll('#tl .tile').forEach(b=>b.classList.toggle('used',pick.includes(+b.dataset.i)));
+      app.querySelectorAll('#ln .tile').forEach(b=>b.onclick=()=>{pick.splice(+b.dataset.j,1);draw()})};
+    app.querySelectorAll('#tl .tile').forEach(b=>b.onclick=()=>{if(!pick.includes(+b.dataset.i)){pick.push(+b.dataset.i);draw()}});
+    $('#clr').onclick=()=>{pick=[];draw()};
+    $('#chk').onclick=()=>{if(pick.length<words.length){toast(false,'استخدم كل الكلمات');return}
+      if(pick.map(i=>words[i]).join(' ')===t)good(t);else{bad();const l=$('#ln');l.classList.remove('wrong');void l.offsetWidth;l.classList.add('wrong')}};
+    draw();
+  }
+  if(k==='gram'){
+    const [q,...o]=t.split('|'),ans=o[0],full=q.replace('___',ans);
+    shell(`<p class="ask">اختر الكلمة المناسبة للفراغ</p><div class="gq" id="gq">${esc(q).replace('___','<u>&nbsp;?&nbsp;</u>')}</div>
+    <div class="opts one">${sh(o).map(x=>`<button class="opt en" data-v="${esc(x)}">${esc(x)}</button>`).join('')}</div>`);
+    app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{if(R.lock)return;if(b.dataset.v===ans){R.lock=true;b.classList.add('right');$('#gq').innerHTML=esc(q).replace('___',`<u>${esc(ans)}</u>`);good(full.replace(/\(.*?\)/,''));setTimeout(()=>R.lock=false,1500)}else{b.classList.add('wrong');bad()}});
+  }
+}
+function bindOpts(ans,speak){
+  app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{if(R.lock)return;
+    if(b.dataset.v===ans){R.lock=true;b.classList.add('right');good(speak);setTimeout(()=>R.lock=false,1300)}
+    else{b.classList.remove('wrong');void b.offsetWidth;b.classList.add('wrong');bad()}});
+}
+function end(){
+  const r=R.first/R.n,s=r>=.9?3:r>=.6?2:1;
+  P[R.u.id]=P[R.u.id]||{};if(s>st(R.u.id,R.sk))P[R.u.id][R.sk]=s;save();
+  app.querySelector('.play').innerHTML=`<div class="end">${MASCOT}<h3>${s===3?'أنت بطل!':s===2?'عمل رائع!':'أحسنت، واصل التدريب!'}</h3>${starRow(s)}
+  <p>أجبت صحيحاً من أول محاولة في <b class="en">${R.first}</b> من <b class="en">${R.n}</b></p>
+  <div class="row"><button class="spk" id="again">العب مرة أخرى</button><button class="spk alt" id="back">ألعاب الوحدة</button></div></div>`;
+  beep(true);setTimeout(()=>say(s===3?'Excellent! You are a star!':'Good job!'),300);
+  $('#again').onclick=()=>start(R.u,R.k==='readq'?'read':R.k);$('#back').onclick=()=>unit(R.u);
+}
+const bi=t=>esc(t).replace(/[A-Za-z][A-Za-z' ,…?!-]*[A-Za-z?…']|[A-Za-z]/g,m=>`<span class="en">${m}</span>`);
+const hl=e=>esc(e).replace(/\[(.*?)\]/g,'<mark>$1</mark>');
+const plain=e=>e.replace(/[\[\]]/g,'').replace(/←/g,', ').replace(/·/g,'. ').replace(/\//g,', ');
+function blankQ(ask,q,opts,ans,extra){
+  const has=q.includes('___');
+  shell(`${extra||''}<p class="ask">${ask}</p><div class="gq" id="gq">${has?esc(q).replace('___','<u>&nbsp;?&nbsp;</u>'):esc(q)}</div>
+  <button class="spk alt" id="sq" style="padding:6px 14px;min-height:40px">${ICON.spk} اسمع السؤال</button>
+  <div class="opts one">${sh(opts).map(x=>`<button class="opt en" data-v="${esc(x)}">${esc(x)}</button>`).join('')}</div>`);
+  $('#sq').onclick=()=>say(q.replace('___','blank'));
+  app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{if(R.lock)return;
+    if(b.dataset.v===ans){R.lock=true;b.classList.add('right');if(has)$('#gq').innerHTML=esc(q).replace('___',`<u>${esc(ans)}</u>`);good(has?q.replace('___',ans):ans);setTimeout(()=>R.lock=false,1600)}
+    else{b.classList.remove('wrong');void b.offsetWidth;b.classList.add('wrong');bad()}});
+}
+function lessonRound(t){
+  if(t.type==='rule'){
+    const r=t.r,heard=new Set();
+    shell(`<div class="rule"><span class="tag">القاعدة ${t.ri+1} من ${R.u.rules.length}</span><h3>${bi(r.t)}</h3>
+    <p class="exp">${bi(r.ar)}</p>
+    <p class="ask">اكتشف الأمثلة: المس كل مثال لتسمعه، وانتبه للكلمات الملوّنة</p>
+    <div class="exs">${r.ex.map((e,i)=>`<button class="ex" data-i="${i}"><span class="pl">${ICON.play}</span><span class="en">${hl(e)}</span></button>`).join('')}</div>
+    <div class="tip"><b>تذكّر:</b> <span>${bi(r.tip)}</span></div>
+    <p class="ask" id="cnt">سمعت <span class="en">0/${r.ex.length}</span> من الأمثلة</p>
+    <button class="spk pk" id="go" disabled style="opacity:.45">فهمت! هيا نتدرّب</button></div>`);
+    app.querySelectorAll('.ex').forEach(b=>b.onclick=()=>{say(plain(r.ex[+b.dataset.i]));heard.add(b.dataset.i);b.classList.add('done');
+      $('#cnt').innerHTML=`سمعت <span class="en">${heard.size}/${r.ex.length}</span> من الأمثلة`;
+      if(heard.size===r.ex.length){const g=$('#go');g.disabled=false;g.style.opacity=1;g.classList.add('pulse');beep(true)}});
+    $('#go').onclick=()=>next();
+    return;
+  }
+  const [q,...o]=t.s.split('|');
+  if(t.type==='chk')return blankQ('تدرّب: '+t.r.t,q,o,o[0]);
+  const rd=R.u.read;
+  blankQ('اختر الإجابة الصحيحة من القصة',q,o,o[0],`<details class="peek"><summary>اقرأ القصة مرة أخرى</summary><p class="en">${esc(rd.text)}</p></details>`);
+}
+const ALLW={};U.forEach(u=>u.W.forEach(w=>{if(!/\s/.test(w.en))ALLW[w.en.toLowerCase()]=w.ar}));
+function lookup(w){
+  w=w.toLowerCase().replace(/[^a-z'-]/g,'').replace(/^'+|'+$/g,'');
+  const c=[w,w.replace(/s$/,''),w.replace(/es$/,''),w.replace(/ed$/,''),w.replace(/d$/,''),w.replace(/ing$/,''),w.replace(/ing$/,'e'),w.replace(/ied$/,'y')];
+  for(const x of c){if(DICT[x])return DICT[x];if(ALLW[x])return ALLW[x]}
+  return null;
+}
+function readView(u){
+  const rd=u.read,S=rd.text.match(/[^.!?]+[.!?]+["”]?\s*/g).map(s=>s.trim());
+  let stop=true;
+  app.innerHTML=`<div class="wrap"><div class="sub"><button class="back" aria-label="رجوع">${ICON.back}</button><div><h2>درس القراءة</h2><small style="color:var(--soft)">${u.ar} · قراءة وفهم</small></div></div>
+  <div class="play"><div class="pic">${rd.p}</div><div class="big en" style="margin-bottom:0">${esc(rd.t)}</div><div class="ar">${esc(rd.ar)}</div>
+  <div class="row"><button class="spk" id="all">${ICON.spk} اقرأ لي القصة</button><button class="spk alt" id="stop">توقّف</button></div>
+  <div class="gloss" id="gl">المس أي كلمة لتسمعها وتعرف معناها</div>
+  <div class="story">${S.map((s,i)=>`<p class="sn" data-i="${i}"><button class="sp" data-i="${i}" aria-label="اسمع الجملة">${ICON.play}</button>${s.split(/\s+/).map(w=>`<span class="wd">${esc(w)}</span>`).join(' ')}</p>`).join('')}</div>
+  <p class="ask">بعد أن تقرأ القصة وتفهمها، أجب عن الأسئلة لتجمع النجوم</p>
+  <button class="spk pk" id="qs">أجب عن الأسئلة ${starRow(st(u.id,'read'))}</button></div></div>`;
+  const mark=i=>app.querySelectorAll('.sn').forEach(p=>p.classList.toggle('on',+p.dataset.i===i));
+  const sayCb=(t,cb)=>{try{speechSynthesis.cancel();const m=new SpeechSynthesisUtterance(t);m.lang='en-US';if(voice)m.voice=voice;m.rate=.62;let done=false;const f=()=>{if(!done){done=true;cb&&cb()}};m.onend=f;setTimeout(f,Math.max(2500,t.length*120));speechSynthesis.speak(m)}catch(e){cb&&setTimeout(cb,1500)}};
+  const run=i=>{if(stop||i>=S.length){stop=true;mark(-1);return}mark(i);app.querySelector(`.sn[data-i="${i}"]`).scrollIntoView({block:'nearest',behavior:'smooth'});sayCb(S[i],()=>setTimeout(()=>run(i+1),350))};
+  $('#all').onclick=()=>{stop=false;run(0)};
+  $('#stop').onclick=()=>{stop=true;mark(-1);try{speechSynthesis.cancel()}catch(e){}};
+  app.querySelectorAll('.sp').forEach(b=>b.onclick=()=>{stop=true;const i=+b.dataset.i;mark(i);say(S[i])});
+  app.querySelectorAll('.wd').forEach(s=>s.onclick=()=>{stop=true;const w=s.textContent.replace(/^[^A-Za-z']+|[^A-Za-z']+$/g,'');const m=lookup(w);
+    app.querySelectorAll('.wd.sel').forEach(x=>x.classList.remove('sel'));s.classList.add('sel');
+    $('#gl').innerHTML=`<b class="en">${esc(w)}</b>${m?` — <span>${esc(m)}</span>`:''}`;$('#gl').classList.add('has');say(w,1)});
+  app.querySelector('.back').onclick=()=>{stop=true;try{speechSynthesis.cancel()}catch(e){}unit(u)};
+  $('#qs').onclick=()=>{stop=true;try{speechSynthesis.cancel()}catch(e){}start(u,'readq')};
+  scrollTo(0,0);
+}
+function learn(u){
+  R={u,k:'learn',items:u.W,i:0};
+  app.innerHTML=`<div class="wrap"><div class="sub"><button class="back" aria-label="رجوع">${ICON.back}</button><div><h2>تعلّم الكلمات</h2><small style="color:var(--soft)">${u.ar} · <span class="en">${u.W.length}</span> كلمة — اضغط على البطاقة لتسمعها</small></div></div>
+  <div class="play"><div class="flash" id="fl">${u.W.map((w,i)=>`<button class="fc" data-i="${i}"><div class="pic">${w.p}</div><div class="w">${w.en}</div><div class="a">${w.ar}</div></button>`).join('')}</div>
+  <div class="row"><button class="spk alt" id="prev">السابقة</button><button class="spk" id="nx">التالية</button></div>
+  <h3 style="margin:22px 0 4px">جمل الوحدة</h3><p class="ask">اضغط على الجملة لتسمعها واقرأها معها</p>
+  <div class="opts one">${u.sent.map(s=>`<button class="opt en snt" style="font-size:19px">${esc(s)}</button>`).join('')}</div></div></div>`;
+  app.querySelector('.back').onclick=()=>unit(u);
+  const fl=$('#fl'),cards=[...fl.children];let cur=0;
+  const go=d=>{cur=Math.max(0,Math.min(cards.length-1,cur+d));cards[cur].scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});say(u.W[cur].en)};
+  cards.forEach(c=>c.onclick=()=>{cur=+c.dataset.i;say(u.W[cur].en)});
+  $('#nx').onclick=()=>go(1);$('#prev').onclick=()=>go(-1);
+  app.querySelectorAll('.snt').forEach(b=>b.onclick=()=>say(b.textContent));
+  scrollTo(0,0);
+}
+home();
+}
+</script>
+</body>
+</html>
