@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>مغامرة الإنجليزي</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;600;800&family=Noto+Color+Emoji&display=swap" rel="stylesheet">
 <style>
 /* VOICE: warm, playful, encouraging — a kid's game console for the Top Goal 1 book
    IDEA: an island map; each unit is an island with stars to collect
    PICTURE: the game board itself — big tappable cards, pictures, letters
    COLOUR and TYPE: book teal + pink accent + sunny yellow; Baloo Bhaijaan 2
    LAYOUT: one column, big targets, works on a phone first */
-:root{color-scheme:light dark;--bg:light-dark(#f3fbf8,#0d2522);--card:light-dark(#fff,#16332f);--ink:light-dark(#10322d,#e8f6f2);--soft:light-dark(#5c7a75,#9cbcb6);--teal:#0f8a7a;--pink:#e8197d;--sun:#ffc928;--ok:#1fa45a;--bad:#e0453a;--line:light-dark(#d6ebe6,#25504a)}
+:root{color-scheme:light dark;--bg:light-dark(#f3fbf8,#0d2522);--card:light-dark(#fff,#16332f);--ink:light-dark(#10322d,#e8f6f2);--soft:light-dark(#5c7a75,#9cbcb6);--teal:#0f8a7a;--pink:#e8197d;--sun:#ffc928;--ok:#1fa45a;--bad:#e0453a;--line:light-dark(#d6ebe6,#25504a);--emo:"Apple Color Emoji","Noto Color Emoji","Segoe UI Emoji",sans-serif}
 :root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
 *{box-sizing:border-box;min-width:0;-webkit-tap-highlight-color:transparent}
 body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 "Baloo Bhaijaan 2",system-ui,sans-serif;overflow-x:clip;min-height:100vh}
@@ -28,10 +28,14 @@ header.top p{margin:4px 0 0;opacity:.9}
 .mascot{width:86px;height:86px;flex:none}
 .total{margin-inline-start:auto;background:#fff2;border-radius:999px;padding:6px 14px;font-weight:800;display:flex;gap:6px;align-items:center;white-space:nowrap}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:14px;margin-top:-34px;position:relative}
-.unit{background:var(--card);border-radius:22px;padding:16px;text-align:start;display:grid;grid-template-columns:64px minmax(0,1fr);gap:4px 12px;align-items:center;box-shadow:0 6px 0 var(--line),0 10px 24px #0f8a7a1a;transition:transform .15s}
+.unit,.rcard{background:var(--card);border-radius:22px;padding:0 0 14px;text-align:start;display:flex;flex-direction:column;gap:8px;overflow:hidden;box-shadow:0 6px 0 var(--line),0 10px 24px #0f8a7a1a;transition:transform .15s}
 .unit:hover{transform:translateY(-3px)}
-.unit .num{grid-row:span 3;width:64px;height:64px;border-radius:18px;display:grid;place-items:center;font-size:32px;color:#fff;font-weight:800}
-.unit b{font-size:20px;line-height:1.1}.unit small{color:var(--soft)}
+.rcard{box-shadow:0 6px 0 var(--line)}.thumb{position:relative;display:block;aspect-ratio:2.4/1;width:100%}.thumb svg,.hero svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.num{position:absolute;top:10px;inset-inline-start:10px;width:48px;height:48px;border-radius:16px;display:grid;place-items:center;font-size:26px;color:#fff;font-weight:800;border:4px solid var(--card)}
+.ut{display:flex;flex-direction:column;padding:4px 16px 0}.ut b.en{text-align:right}.ut small{color:var(--soft)}.unit .bar{margin:0 16px}.rcard .stars{margin-top:4px}
+.hero{position:relative;aspect-ratio:2.6/1;border-radius:24px;overflow:hidden;margin-bottom:14px;box-shadow:0 6px 0 var(--line)}.hero.in{aspect-ratio:2.2/1;margin:0 0 12px;box-shadow:none;border-radius:18px}
+.emo{font-family:var(--emo)}
+.unit b,.rcard b{font-size:20px;line-height:1.15}.unit small{color:var(--soft)}
 .stars{display:flex;gap:2px}.stars svg{width:16px;height:16px}
 .bar{height:8px;border-radius:9px;background:var(--line);overflow:hidden}.bar i{display:block;height:100%;background:var(--sun)}
 .sub{display:flex;align-items:center;gap:12px;padding:16px 0}
@@ -48,6 +52,7 @@ header.top p{margin:4px 0 0;opacity:.9}
 .prog{display:flex;align-items:center;gap:10px;margin-bottom:12px}.prog .bar{flex:1;height:12px}
 .prog span{font-weight:800;color:var(--soft);white-space:nowrap}
 .ask{font-size:18px;color:var(--soft);margin:0 0 8px}
+.pic,.opt .e,.fc .pic{font-family:var(--emo)}
 .pic{font-size:clamp(64px,16vw,96px);line-height:1.1;margin:6px 0}
 .big{font-size:clamp(30px,8vw,46px);font-weight:800;line-height:1.1;margin:4px 0 10px}
 .ar{font-size:22px;color:var(--soft)}
@@ -360,7 +365,33 @@ g:{t:'Vacation Plans',ar:'خطط الإجازة',p:'🏖️',text:'School is fin
 };
 const DICT={hi:'مرحباً',my:'لي / خاصتي',name:'اسم',is:'يكون',today:'اليوم',first:'أول / أولاً',day:'يوم',a:'أداة نكرة',little:'قليلاً / صغير',morning:'الصباح',but:'لكن',new:'جديد',teacher:'معلّم',very:'جداً',classroom:'الفصل',and:'و',bright:'مشرق',we:'نحن',had:'كان لدينا',small:'صغير',for:'لـ / من أجل',year:'سنة',it:'هو / هي (لغير العاقل)',was:'كان',every:'كل',friday:'الجمعة',visits:'يزور',visit:'يزور',his:'له / خاصته',too:'أيضاً',she:'هي',talks:'يتكلّم',all:'كل',time:'وقت',he:'هو',grandpa:'جدّ',grandma:'جدّة',sometimes:'أحياناً',makes:'يصنع',big:'كبير',cake:'كعكة',loves:'يحب',family:'عائلة',saturday:'السبت',gets:'يحصل',up:'أعلى',at:'عند / في',eight:'ثمانية',"o'clock":'الساعة',then:'ثم',feeds:'يُطعم',animals:'حيوانات',garden:'حديقة',sister:'أخت',sweeping:'يكنس',floor:'أرضية',now:'الآن',mom:'أمي',asks:'يسأل',can:'يستطيع',you:'أنت',take:'يأخذ',out:'خارج',trash:'قمامة',sure:'بالتأكيد',says:'يقول',after:'بعد',chores:'الأعمال المنزلية',they:'هم',read:'يقرأ',together:'معاً',yesterday:'أمس',played:'لعب',football:'كرة القدم',with:'مع',friends:'أصدقاء',team:'فريق',waited:'انتظر',long:'طويل',jumped:'قفز',kicked:'ركل',ball:'كرة',scored:'سجّل',goal:'هدف',shouted:'صرخ',clapped:'صفّق',carried:'حمل',him:'هو (مفعول)',around:'حول',field:'ملعب',"didn't":'لم',cry:'يبكي',laughed:'ضحك',lot:'كثير',last:'الماضي / الأخير',weekend:'عطلة نهاية الأسبوع',fun:'متعة',on:'على / في',went:'ذهب',shopping:'التسوّق',saw:'رأى',game:'لعبة',bought:'اشترى',sunday:'الأحد',rained:'أمطرت',so:'لذلك',stayed:'بقي',her:'لها / هي',won:'فاز',watched:'شاهد',summer:'الصيف',decided:'قرّر',to:'إلى',go:'يذهب',walking:'المشي',in:'في',wanted:'أراد',hard:'صعب',stop:'يتوقف',from:'من',top:'القمة',could:'استطاع',see:'يرى',when:'عندما',five:'خمسة',"couldn't":'لم يستطع',hills:'تلال',running:'يجري',fell:'سقط',hurt:'آذى / يؤلم',back:'ظهر',"what's":'ما هو',matter:'الأمر',asked:'سأل',everything:'كل شيء',hurts:'يؤلم',said:'قال',doctor:'طبيب',took:'أخذ',"there's":'يوجد',nothing:'لا شيء',wrong:'خطأ / مشكلة',should:'ينبغي',rest:'يرتاح',"mustn't":'ممنوع',run:'يجري',stairs:'الدرج',vet:'طبيب بيطري',who:'الذي (للأشخاص)',works:'يعمل',shelter:'ملجأ',place:'مكان',where:'حيث / أين',sick:'مريض',stay:'يبقى',helping:'يساعد',next:'بجانب / التالي',there:'هناك',which:'الذي (للأشياء)',moves:'يتحرّك',jumps:'يقفز',faster:'أسرع',than:'من (للمقارنة)',other:'أخرى',good:'جيد',this:'هذا',report:'تقرير / نشرة',afternoon:'بعد الظهر',going:'ذاهب / سوف',be:'يكون',tomorrow:'غداً',look:'انظر',might:'قد',school:'مدرسة',finished:'انتهى',"we're":'نحن',our:'لنا',bags:'حقائب',are:'يكونون',packed:'محزومة',sleep:'ينام',island:'جزيرة',"it's":'إنه',much:'كثير',of:'من',the:'الـ (أداة تعريف)',an:'أداة نكرة',i:'أنا',"faisal's":'الخاص بفيصل',"hana's":'الخاص بهناء',dr:'دكتور',always:'دائماً',come:'يأتي',comic:'مصوّر',books:'كتب',book:'كتاب',board:'لوح / طاولة',tv:'التلفاز',high:'مرتفع','x-ray':'صورة أشعة',animal:'حيوان',sara:'سارة (اسم)',faisal:'فيصل (اسم)',nora:'نورة (اسم)',omar:'عمر (اسم)',lina:'لينا (اسم)',khalid:'خالد (اسم)',yousef:'يوسف (اسم)',hana:'هناء (اسم)',ali:'علي (اسم)',reem:'ريم (اسم)',bought:'اشترى'};
 
-U.forEach(u=>{u.rules=RULES[u.id];u.read=READ[u.id];});
+const READ2={
+w:{t:'A Big Celebration',ar:'احتفال كبير',text:'Last week, my school had a big celebration. There were balloons everywhere. The music was loud and exciting. My friend Dana was very surprised because she won a prize. Her painting was brilliant! We ate cake and played games. It was a fantastic day!',q:['What did the school have?|a big celebration|a test|a trip','What was everywhere?|balloons|books|cats','Why was Dana surprised?|she won a prize|she was sick|she lost her bag','What did they eat?|cake|fish|pizza']},
+'1':{t:'My Favorite Photo',ar:'صورتي المفضّلة',text:'This is my favorite photo. It is from my cousin\'s wedding last year. My whole family is in it. My grandparents are sitting in the middle. My aunt is next to my uncle. My little cousin is holding a kitten. Everyone is smiling. I look at this photo very often!',q:['Where is the photo from?|a wedding|a school|a park','Who is sitting in the middle?|the grandparents|the cousins|the parents','What is the little cousin holding?|a kitten|a rabbit|a parrot','How often does the writer look at the photo?|very often|never|rarely']},
+'2':{t:'Helping at Home',ar:'المساعدة في البيت',text:'In many homes, everyone helps. In Maha\'s house, her dad usually cooks dinner. Maha always sets the table. Her brother clears the table after dinner. On Fridays, the whole family cleans the house together. They sweep the floors and wash the windows. Then they sit together and have tea. Helping at home is a good habit!',q:['Who usually cooks dinner?|Maha\'s dad|Maha|her brother','What does Maha always do?|sets the table|cuts the grass|feeds the cat','When does the family clean together?|on Fridays|every morning|on Mondays','What do they do after cleaning?|have tea|go shopping|watch a movie']},
+'3':{t:'The School Play',ar:'المسرحية المدرسية',text:'Last week, our class put on a school play. The story was about a young boy and an old tree. Salem played the boy. He climbed the tree on the stage! Lama played the tree. She didn\'t move at all. At the end, everyone clapped and shouted. Our teacher said, "Excellent work!"',q:['When was the play?|last week|yesterday|next week','Who played the boy?|Salem|Lama|the teacher','What did Salem climb?|the tree|a hill|the stairs','Did Lama move?|No, she didn\'t.|Yes, she did.|Yes, she was.']},
+'4':{t:'My Hobby Blog',ar:'مدوّنة هوايتي',text:'Hi everyone! Welcome to my blog. My name is Majed, and I love making models. Last month, I made a model plane. I worked slowly and carefully. It took two weeks! My sister likes taking photos, so she took a photo of my plane. What are your hobbies? Write to me!',q:['What does Majed love?|making models|playing the piano|reading books','What did he make last month?|a model plane|a model car|a cake','How did he work?|slowly and carefully|quickly|loudly','Who took a photo of the plane?|his sister|his dad|his friend']},
+'5':{t:'Tips for an Outdoor Trip',ar:'نصائح لرحلة في الطبيعة',text:'Do you want to go on an outdoor trip? Here are some tips. First, decide where to go: a lake, a forest, or the desert. Don\'t forget to bring water and a hat. Always walk with a grown-up. Never go into a deep cave alone. Try to finish your walk before dark. Have fun and stay safe!',q:['What should you bring?|water and a hat|a TV|a piano','Who should you walk with?|a grown-up|a kitten|nobody','Where should you never go alone?|into a deep cave|to the park|to school','When should you finish your walk?|before dark|at midnight|after dark']},
+'6':{t:'First Aid at Home',ar:'الإسعافات الأولية في البيت',text:'Small accidents can happen at home. If you have a small cut, wash it with water. Then put a band aid on it. If you fall and hurt your leg, sit down and rest. Put some ice on it. If something hurts a lot, you must tell a grown-up. You should never take medicine alone. Stay safe!',q:['What should you do first with a small cut?|wash it with water|put ice on it|run','What do you put on a cut?|a band aid|a hat|medicine','What can you put on a hurt leg?|ice|a sock|nothing','Should you take medicine alone?|No, never.|Yes, always.|Yes, sometimes.']},
+'7':{t:'Amazing Wild Animals',ar:'حيوانات برية مدهشة',text:'Wild animals are amazing! The giraffe is the tallest animal in the world. It eats leaves from high trees. The cheetah runs faster than any other animal. The tortoise moves very slowly, but it can live for more than 100 years! The polar bear lives where it is very cold. Elephants are very smart, and they never forget!',q:['Which animal is the tallest?|the giraffe|the elephant|the bear','Which animal runs the fastest?|the cheetah|the tortoise|the panda','How long can a tortoise live?|more than 100 years|5 years|one year','Where does the polar bear live?|where it is very cold|in the desert|in the jungle']},
+'8':{t:'The Four Seasons',ar:'فصول السنة الأربعة',text:'There are four seasons in a year. In spring, flowers grow and the weather is warm. In summer, it is very hot and sunny. In fall, the leaves change color and it is windy. In winter, it is cold. In some countries, it snows in winter. Which season do you like best?',q:['How many seasons are there?|four|two|six','What is summer like?|hot and sunny|cold and snowy|cool','What happens in fall?|the leaves change color|flowers grow|it is very hot','When does it snow in some countries?|in winter|in summer|in spring']}
+};
+const RSCN={
+w:[['room','👧 🎒 📚'],['party','🎈 🎂 🏆']],
+'1':[['room','👴 🎂 👵'],['party','📷 👨‍👩‍👧 🐱']],
+'2':[['room','🧹 👦 🐔'],['room','🍽️ 👩‍👧 🫖']],
+'3':[['field','⚽ 🧒 🥅'],['stage','🌳 🧒 👏']],
+'4':[['room','🎲 👧 📺'],['room','🛩️ 👦 📷']],
+'5':[['forest','👧 ⛰️ 💦'],['forest','🎒 🧢 🧴']],
+'6':[['room','🩻 👦 🩺'],['room','🩹 🧊 🧑‍⚕️']],
+'7':[['savanna','🐼 👩‍⚕️ 🐢'],['savanna','🦒 🐆 🐘']],
+'8':[['storm','☁️ 🌈 ☂️'],['day','🌷 🍁 ⛄']],
+g:[['beach','🧳 🏝️ 👋']]
+};
+const USCN={w:['day','🏫 🎒 🎉'],'1':['party','👴 👨‍👩‍👧 👵'],'2':['room','🧹 🪣 🛏️'],'3':['field','⚽ 🧒 📖'],'4':['room','🎮 🎹 📷'],'5':['forest','⛺ 🎒 🦋'],'6':['room','🩹 🧸 💊'],'7':['savanna','🦒 🐘 🦁'],'8':['storm','☂️ 🌈 ⛄'],g:['beach','🏖️ 🧳 👋']};
+Object.assign(DICT,{last:'الماضي / الأخير',week:'أسبوع',had:'كان لديه',there:'هناك',were:'كانوا',balloons:'بالونات',everywhere:'في كل مكان',music:'موسيقى',loud:'عالٍ',friend:'صديق',because:'لأن',prize:'جائزة',painting:'لوحة',ate:'أكل',games:'ألعاب',fantastic:'رائع',favorite:'مفضّل',photo:'صورة',wedding:'حفل زفاف',whole:'كامل',sitting:'جالس',middle:'المنتصف',holding:'يحمل',everyone:'الجميع',smiling:'يبتسم',look:'ينظر',often:'غالباً / كثيراً',many:'كثير',homes:'بيوت',helps:'يساعد',house:'بيت',dad:'أبي / الأب',usually:'عادةً',cooks:'يطبخ',dinner:'العشاء',sets:'يجهّز',table:'طاولة',brother:'أخ',clears:'ينظّف / يرفع',fridays:'أيام الجمعة',cleans:'ينظّف',sweep:'يكنس',floors:'أرضيات',wash:'يغسل',windows:'نوافذ',sit:'يجلس',tea:'شاي',helping:'المساعدة',habit:'عادة',class:'فصل',put:'يضع / قدّم',play:'مسرحية / يلعب',story:'قصة',about:'عن',boy:'ولد',tree:'شجرة',stage:'خشبة المسرح',move:'يتحرّك',end:'النهاية',everyone:'الجميع',excellent:'ممتاز',work:'عمل',welcome:'مرحباً بك',blog:'مدوّنة',love:'أحب',making:'صنع',models:'مجسّمات',month:'شهر',made:'صنع',model:'مجسّم',plane:'طائرة',worked:'عمل',two:'اثنان',weeks:'أسابيع',likes:'يحب',taking:'التقاط',photos:'صور',hobbies:'هوايات',write:'اكتب',me:'لي / أنا',want:'تريد',outdoor:'في الهواء الطلق',trip:'رحلة',here:'هنا',some:'بعض',tips:'نصائح',decide:'قرّر',or:'أو',"don't":'لا',forget:'تنسى',bring:'تحضر',hat:'قبعة',always:'دائماً',walk:'تمشي',never:'أبداً',into:'إلى داخل',alone:'وحدك',try:'حاول',before:'قبل',dark:'الظلام',have:'استمتع / لديك',stay:'ابقَ',small:'صغير',accidents:'حوادث',happen:'تحدث',home:'البيت',if:'إذا',wash:'اغسل',leg:'ساق',some:'بعض',something:'شيء ما',must:'يجب',tell:'تخبر',wild:'برّي',amazing:'مدهش',world:'العالم',eats:'يأكل',trees:'أشجار',cheetah:'فهد',runs:'يجري',any:'أي',live:'يعيش',more:'أكثر',years:'سنوات',lives:'يعيش',elephants:'فيلة',four:'أربعة',seasons:'فصول',flowers:'زهور',grow:'تنمو',change:'تتغيّر',color:'لون',winter:'الشتاء',countries:'بلدان',snows:'تثلج',best:'أكثر شيء',which:'أي / الذي',do:'فعل مساعد',like:'تحب',dana:'دانة (اسم)',maha:'مها (اسم)',salem:'سالم (اسم)',lama:'لمى (اسم)',majed:'ماجد (اسم)',"cousin's":'الخاص بابن العم',"maha's":'الخاص بمها',what:'ماذا / ما',your:'لك / خاصتك','grown-up':'شخص كبير',finish:'تُنهي',cut:'جرح',band:'شريط',aid:'مساعدة (band aid: لاصق جروح)',down:'أسفل (sit down: اجلس)',tallest:'الأطول',polar:'قطبي',took:'أخذ / استغرق',of:'من','100':'مئة',than:'من (للمقارنة)'});
+
+U.forEach(u=>{u.rules=RULES[u.id];u.reads=[READ[u.id],READ2[u.id]].filter(Boolean);u.reads.forEach((r,i)=>{const c=RSCN[u.id][i];r.s=c[0];r.a=c[1]});u.sc=USCN[u.id];});
 U.forEach(u=>{u.W=u.words.split('\n').map(l=>{const [en,ar,p]=l.split('|');return{en,ar,p}})});
 
 const ICON={
@@ -393,8 +424,10 @@ const G=[
 /* storage */
 let P={};try{P=JSON.parse(localStorage.getItem('tg1-progress')||'{}')}catch(e){P={}}
 const save=()=>{try{localStorage.setItem('tg1-progress',JSON.stringify(P))}catch(e){}};
+for(const id in P){if(P[id].read&&!P[id].read0)P[id].read0=P[id].read}
 const st=(u,g)=>(P[u]&&P[u][g])||0;
-const uStars=u=>G.filter(g=>g.k!=='learn').reduce((s,g)=>s+st(u.id,g.k),0);
+const gst=(u,k)=>k==='read'?Math.floor(u.reads.reduce((s,r,i)=>s+st(u.id,'read'+i),0)/u.reads.length):st(u.id,k);
+const uStars=u=>G.filter(g=>g.k!=='learn').reduce((s,g)=>s+gst(u,g.k),0);
 const MAXU=(G.length-1)*3;
 
 /* helpers */
@@ -416,17 +449,47 @@ const praise=()=>PRAISE[Math.random()*PRAISE.length|0];
 const MASCOT=`<svg class="mascot" viewBox="0 0 100 100"><ellipse cx="50" cy="92" rx="26" ry="5" fill="#0005"/><path d="M50 6l11 22 24 3-17 17 4 24-22-11-22 11 4-24L15 31l24-3z" fill="#ffc928" stroke="#d9a100" stroke-width="3" stroke-linejoin="round"/><circle cx="42" cy="42" r="4" fill="#10322d"/><circle cx="58" cy="42" r="4" fill="#10322d"/><circle cx="43.5" cy="40.5" r="1.4" fill="#fff"/><circle cx="59.5" cy="40.5" r="1.4" fill="#fff"/><path d="M42 52q8 7 16 0" stroke="#10322d" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="36" cy="50" r="3.5" fill="#e8197d" opacity=".45"/><circle cx="64" cy="50" r="3.5" fill="#e8197d" opacity=".45"/></svg>`;
 const WAVE='<svg class="wave" viewBox="0 0 400 46" preserveAspectRatio="none"><path d="M0 30 Q50 6 100 26 T200 24 T300 26 T400 18 V46 H0z" fill="var(--bg)"/></svg>';
 
+let scn=0;
+function scene(type,actors){
+  const id='s'+(scn++),A=actors.split(' ').filter(Boolean),T=type;
+  const sky={day:['#7fd0ff','#e6f7ff'],room:['#ffe3c2','#fff3e3'],party:['#ffd6e8','#fff0f6'],stage:['#4a2a6b','#7a4fa0'],field:['#7fd0ff','#e6f7ff'],forest:['#8fd8ff','#eafaf0'],beach:['#6ccaf5','#e4f7ff'],snow:['#bcd9f0','#f2f8ff'],storm:['#7489a3','#b9c7d8'],savanna:['#ffc27a','#fff0d4']}[T]||['#7fd0ff','#e6f7ff'];
+  let bg=`<defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${sky[0]}"/><stop offset="1" stop-color="${sky[1]}"/></linearGradient><filter id="${id}f"><feDropShadow dx="0" dy="3" stdDeviation="2" flood-opacity=".25"/></filter></defs><rect width="400" height="200" fill="url(#${id})"/>`;
+  const cloud=(x,y,k,c='#fff')=>`<g fill="${c}" opacity=".95"><ellipse cx="${x}" cy="${y}" rx="${26*k}" ry="${12*k}"/><ellipse cx="${x-14*k}" cy="${y+3*k}" rx="${16*k}" ry="${10*k}"/><ellipse cx="${x+10*k}" cy="${y-7*k}" rx="${16*k}" ry="${12*k}"/></g>`;
+  const sun=(x,y,r)=>`<circle cx="${x}" cy="${y}" r="${r+10}" fill="#ffe27a" opacity=".35"/><circle cx="${x}" cy="${y}" r="${r}" fill="#ffd23f"/>`;
+  const hills=(a,b)=>`<path d="M0 135 Q70 95 150 128 T300 118 T400 122 V200 H0z" fill="${a}"/><path d="M0 158 Q90 132 200 152 T400 148 V200 H0z" fill="${b}"/>`;
+  if(T==='day')bg+=sun(345,42,20)+cloud(90,45,1)+cloud(230,30,.8)+hills('#8fd47f','#5cbf5f');
+  if(T==='field')bg+=sun(350,40,18)+cloud(110,40,.9)+`<rect y="120" width="400" height="80" fill="#4db361"/>${[0,1,2,3,4].map(i=>`<rect x="${i*90}" y="120" width="45" height="80" fill="#45a857"/>`).join('')}<path d="M0 160 H400 M200 120 V200" stroke="#fff" stroke-width="3" opacity=".8"/><ellipse cx="200" cy="160" rx="40" ry="14" fill="none" stroke="#fff" stroke-width="3" opacity=".8"/>`;
+  if(T==='forest')bg+=sun(60,40,18)+cloud(300,38,.8)+`<path d="M0 130 Q100 100 200 125 T400 115 V200 H0z" fill="#7fcf86"/>${[20,70,120,280,330,375].map((x,i)=>`<path d="M${x} ${70+i%2*14} l22 60 h-44z" fill="${i%2?'#2f8f4e':'#3aa35c'}"/><rect x="${x-3}" y="${130+i%2*14}" width="6" height="10" fill="#7a5230"/>`).join('')}<path d="M0 158 Q110 140 200 156 T400 150 V200 H0z" fill="#4fae5e"/>`;
+  if(T==='beach')bg+=sun(330,45,22)+cloud(110,40,.9)+`<rect y="105" width="400" height="45" fill="#2bb3d8"/><path d="M0 112 q20 -6 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0" stroke="#bfefff" stroke-width="3" fill="none"/><path d="M0 145 Q120 128 240 142 T400 138 V200 H0z" fill="#f6d98e"/>`;
+  if(T==='snow')bg+=cloud(100,40,1,'#fff')+`${Array.from({length:22},(_,i)=>`<circle cx="${(i*67)%400}" cy="${(i*41)%120+10}" r="${2+i%3}" fill="#fff"/>`).join('')}<path d="M0 135 Q90 100 200 130 T400 120 V200 H0z" fill="#e8f2fb"/><path d="M0 160 Q120 140 220 158 T400 152 V200 H0z" fill="#fff"/>`;
+  if(T==='storm')bg+=cloud(90,40,1.3,'#5d6e85')+cloud(270,35,1.5,'#66788f')+`${Array.from({length:16},(_,i)=>`<path d="M${20+i*25} ${70+i%3*8} l-6 16" stroke="#dbe8f6" stroke-width="2.5" stroke-linecap="round"/>`).join('')}<path d="M210 120 a90 90 0 0 1 180 0" fill="none" stroke-width="7" stroke="#ff6b6b" opacity=".75"/><path d="M218 120 a82 82 0 0 1 164 0" fill="none" stroke-width="7" stroke="#ffd23f" opacity=".75"/><path d="M226 120 a74 74 0 0 1 148 0" fill="none" stroke-width="7" stroke="#4fc36b" opacity=".75"/><path d="M234 120 a66 66 0 0 1 132 0" fill="none" stroke-width="7" stroke="#3a8ee6" opacity=".75"/>`+hills('#77ad72','#5b9a5c');
+  if(T==='savanna')bg+=sun(300,70,30)+`<path d="M0 135 Q100 115 200 130 T400 125 V200 H0z" fill="#e8c26a"/><rect x="62" y="70" width="7" height="70" fill="#7a5230"/><ellipse cx="66" cy="70" rx="48" ry="13" fill="#4f8f3a"/><ellipse cx="80" cy="62" rx="30" ry="9" fill="#5fa548"/><path d="M0 160 Q120 145 220 158 T400 152 V200 H0z" fill="#d9ad4f"/>`;
+  if(T==='room'||T==='party'){const wall=T==='room'?'#ffe9cf':'#ffe1ee';bg+=`<rect width="400" height="150" fill="${wall}"/><rect x="34" y="26" width="92" height="74" rx="6" fill="#fff"/><rect x="40" y="32" width="80" height="62" rx="3" fill="#9fdcff"/><circle cx="104" cy="50" r="9" fill="#ffd23f"/><path d="M40 94 Q70 70 120 90 V94z" fill="#7fcf86"/><path d="M80 32 V94 M40 63 H120" stroke="#fff" stroke-width="4"/><rect x="290" y="34" width="70" height="50" rx="4" fill="#fff"/><rect x="296" y="40" width="58" height="38" fill="${T==='room'?'#ffb27a':'#b28cff'}" opacity=".7"/><rect y="148" width="400" height="52" fill="#c98d5a"/>${[0,1,2,3,4,5,6,7].map(i=>`<path d="M${i*55} 148 V200" stroke="#b37a4b" stroke-width="2"/>`).join('')}<rect y="146" width="400" height="5" fill="#fff" opacity=".7"/>`;
+    if(T==='party')bg+=`<path d="M0 12 Q100 40 200 12 T400 12" fill="none" stroke="#e8197d" stroke-width="2"/>${[30,80,130,180,230,280,330,380].map((x,i)=>`<path d="M${x-8} ${16+Math.abs(Math.sin(x/64))*14} l8 14 l8 -14z" fill="${['#ffd23f','#2a7de1','#1fa45a','#e8197d'][i%4]}"/>`).join('')}`}
+  if(T==='stage')bg+=`<rect y="0" width="400" height="18" fill="#c0283f"/><path d="M0 0 H70 Q50 90 70 150 H0z" fill="#d6304a"/><path d="M400 0 H330 Q350 90 330 150 H400z" fill="#d6304a"/><ellipse cx="200" cy="150" rx="150" ry="40" fill="#ffe27a" opacity=".25"/><rect y="148" width="400" height="52" fill="#9a6a3e"/><rect y="146" width="400" height="5" fill="#ffd27a"/>`;
+  const n=A.length,sz=[64,54,48,44];
+  const act=A.map((e,i)=>{const x=(n===1?200:60+i*(280/(n-1))),k=i===1||n===1?sz[0]:sz[1];return`<ellipse cx="${x}" cy="182" rx="${k*.42}" ry="6" fill="#000" opacity=".18"/><text x="${x}" y="176" font-size="${k}" text-anchor="middle" class="emo" filter="url(#${id}f)">${e}</text>`}).join('');
+  return `<svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${bg}${act}</svg>`;
+}
+function readList(u){
+  app.innerHTML=`<div class="wrap"><div class="sub"><button class="back" aria-label="رجوع">${ICON.back}</button><div><h2>درس القراءة</h2><small style="color:var(--soft)">${u.ar} · اختر نصاً لتقرأه</small></div></div>
+  <div class="games rl">${u.reads.map((r,i)=>`<button class="rcard" data-i="${i}"><span class="thumb">${scene(r.s,r.a)}<span class="num" style="background:${u.c}">${i+1}</span></span><span class="ut"><b class="en">${esc(r.t)}</b><small>${esc(r.ar)}</small>${starRow(st(u.id,'read'+i))}</span></button>`).join('')}</div></div>`;
+  app.querySelector('.back').onclick=()=>unit(u);
+  app.querySelectorAll('.rcard').forEach(b=>b.onclick=()=>readView(u,+b.dataset.i));
+  scrollTo(0,0);
+}
 function home(){
   const tot=U.reduce((s,u)=>s+uStars(u),0);
   app.innerHTML=`<header class="top"><div class="in">${MASCOT}<div><h1>مغامرة الإنجليزي</h1><p>ألعاب كتاب <span class="en">Top Goal 1</span> — اختر وحدة وابدأ اللعب</p></div><div class="total">${ICON.star(1).replace('<svg','<svg width="22" height="22"')} <span class="en">${tot}</span></div></div>${WAVE}</header>
-  <div class="wrap"><div class="grid">${U.map((u,i)=>{const s=uStars(u);return`<button class="unit" data-u="${i}"><span class="num" style="background:${u.c}">${u.n}</span><b>${u.ar}</b><small class="en" style="text-align:end">${u.en}</small><span class="bar"><i style="width:${s/MAXU*100}%"></i></span></button>`}).join('')}</div>
+  <div class="wrap"><div class="grid">${U.map((u,i)=>{const s=uStars(u);return`<button class="unit" data-u="${i}"><span class="thumb">${scene(u.sc[0],u.sc[1])}<span class="num" style="background:${u.c}">${u.n}</span></span><span class="ut"><b>${u.ar}</b><small class="en">${u.en}</small></span><span class="bar"><i style="width:${s/MAXU*100}%"></i></span></button>`}).join('')}</div>
   <p class="note">النجوم تُحفظ على هذا الجهاز. كل لعبة تعطي حتى ٣ نجوم.</p></div>`;
   app.querySelectorAll('.unit').forEach(b=>b.onclick=()=>unit(U[b.dataset.u]));
   scrollTo(0,0);
 }
 function unit(u){
   app.innerHTML=`<div class="wrap"><div class="sub"><button class="back" aria-label="رجوع">${ICON.back}</button><div><h2>${u.ar}</h2><small class="en" style="color:var(--soft)">Unit ${u.n} · ${u.en}</small></div><div class="total" style="background:var(--card);color:var(--ink);box-shadow:0 4px 0 var(--line)">${ICON.star(1).replace('<svg','<svg width="20" height="20"')} <span class="en">${uStars(u)}/${MAXU}</span></div></div>
-  <div class="games">${G.map(g=>`<button class="game" data-g="${g.k}"><span class="ic" style="background:${g.c}">${ICON[g.ic]}</span><span><b>${g.ar}</b><small>${g.d}</small>${g.k==='learn'?`<small style="color:${g.c};font-weight:800">ابدأ من هنا</small>`:starRow(st(u.id,g.k))}</span></button>`).join('')}</div></div>`;
+  <div class="hero">${scene(u.sc[0],u.sc[1])}</div>
+  <div class="games">${G.map(g=>`<button class="game" data-g="${g.k}"><span class="ic" style="background:${g.c}">${ICON[g.ic]}</span><span><b>${g.ar}</b><small>${g.d}</small>${g.k==='learn'?`<small style="color:${g.c};font-weight:800">ابدأ من هنا</small>`:starRow(gst(u,g.k))}${g.k==='read'&&u.reads.length>1?`<small style="color:${g.c};font-weight:800">${u.reads.length} نصوص للقراءة</small>`:''}</span></button>`).join('')}</div></div>`;
   app.querySelector('.back').onclick=home;
   app.querySelectorAll('.game').forEach(b=>b.onclick=()=>start(u,b.dataset.g));
   scrollTo(0,0);
@@ -434,22 +497,22 @@ function unit(u){
 
 /* game engine */
 let R=null;
-function start(u,k){
+function start(u,k,x){
   const W=u.W;let items;
   if(k==='learn')return learn(u);
-  if(k==='read')return readView(u);
+  if(k==='read')return u.reads.length>1?readList(u):readView(u,0);
   if(k==='rules'){items=[];u.rules.forEach((r,ri)=>{items.push({type:'rule',r,ri});sh(r.chk).forEach(c=>items.push({type:'chk',s:c,r}))})}
-  if(k==='readq')items=u.read.q.map(x=>({type:'q',s:x}));
+  if(k==='readq')items=u.reads[x].q.map(x=>({type:'q',s:x}));
   if(k==='listen'||k==='match')items=sh(W).slice(0,8);
   if(k==='spell')items=sh(W.filter(w=>/^[a-z]{3,11}$/i.test(w.en))).slice(0,6);
   if(k==='say')items=sh(W).slice(0,6);
   if(k==='build')items=sh(u.sent);
   if(k==='gram')items=sh(u.gram);
-  R={u,k,sk:k==='readq'?'read':k,items,i:0,first:0,tried:false,n:items.filter(x=>x.type!=='rule').length};
+  R={u,k,rx:x,gk:k==='readq'?'read':k,sk:k==='readq'?'read'+x:k,items,i:0,first:0,tried:false,n:items.filter(x=>x.type!=='rule').length};
   round();
 }
 function shell(inner){
-  const g=G.find(x=>x.k===R.sk);
+  const g=G.find(x=>x.k===R.gk);
   app.innerHTML=`<div class="wrap"><div class="sub"><button class="back" aria-label="رجوع">${ICON.back}</button><div><h2>${g.ar}</h2><small style="color:var(--soft)">${R.u.ar} · مهارة: ${g.sk}</small></div></div>
   <div class="play"><div class="prog"><span class="en">${R.i+1}/${R.items.length}</span><span class="bar"><i style="width:${R.i/R.items.length*100}%;background:${g.c}"></i></span></div>${inner}<div class="toast" id="toast"></div></div></div>`;
   app.querySelector('.back').onclick=()=>{try{speechSynthesis.cancel()}catch(e){}unit(R.u)};
@@ -550,7 +613,7 @@ function end(){
   <p>أجبت صحيحاً من أول محاولة في <b class="en">${R.first}</b> من <b class="en">${R.n}</b></p>
   <div class="row"><button class="spk" id="again">العب مرة أخرى</button><button class="spk alt" id="back">ألعاب الوحدة</button></div></div>`;
   beep(true);setTimeout(()=>say(s===3?'Excellent! You are a star!':'Good job!'),300);
-  $('#again').onclick=()=>start(R.u,R.k==='readq'?'read':R.k);$('#back').onclick=()=>unit(R.u);
+  $('#again').onclick=()=>R.k==='readq'?readView(R.u,R.rx):start(R.u,R.k);$('#back').onclick=()=>R.k==='readq'&&R.u.reads.length>1?readList(R.u):unit(R.u);
 }
 const bi=t=>esc(t).replace(/[A-Za-z][A-Za-z' ,…?!-]*[A-Za-z?…']|[A-Za-z]/g,m=>`<span class="en">${m}</span>`);
 const hl=e=>esc(e).replace(/\[(.*?)\]/g,'<mark>$1</mark>');
@@ -583,37 +646,37 @@ function lessonRound(t){
   }
   const [q,...o]=t.s.split('|');
   if(t.type==='chk')return blankQ('تدرّب: '+t.r.t,q,o,o[0]);
-  const rd=R.u.read;
+  const rd=R.u.reads[R.rx];
   blankQ('اختر الإجابة الصحيحة من القصة',q,o,o[0],`<details class="peek"><summary>اقرأ القصة مرة أخرى</summary><p class="en">${esc(rd.text)}</p></details>`);
 }
 const ALLW={};U.forEach(u=>u.W.forEach(w=>{if(!/\s/.test(w.en))ALLW[w.en.toLowerCase()]=w.ar}));
 function lookup(w){
-  w=w.toLowerCase().replace(/[^a-z'-]/g,'').replace(/^'+|'+$/g,'');
+  w=w.toLowerCase().replace(/[^a-z0-9'-]/g,'').replace(/^'+|'+$/g,'');
   const c=[w,w.replace(/s$/,''),w.replace(/es$/,''),w.replace(/ed$/,''),w.replace(/d$/,''),w.replace(/ing$/,''),w.replace(/ing$/,'e'),w.replace(/ied$/,'y')];
   for(const x of c){if(DICT[x])return DICT[x];if(ALLW[x])return ALLW[x]}
   return null;
 }
-function readView(u){
-  const rd=u.read,S=rd.text.match(/[^.!?]+[.!?]+["”]?\s*/g).map(s=>s.trim());
+function readView(u,x){
+  const rd=u.reads[x],S=rd.text.match(/[^.!?]+[.!?]+["”]?\s*/g).map(s=>s.trim());
   let stop=true;
-  app.innerHTML=`<div class="wrap"><div class="sub"><button class="back" aria-label="رجوع">${ICON.back}</button><div><h2>درس القراءة</h2><small style="color:var(--soft)">${u.ar} · قراءة وفهم</small></div></div>
-  <div class="play"><div class="pic">${rd.p}</div><div class="big en" style="margin-bottom:0">${esc(rd.t)}</div><div class="ar">${esc(rd.ar)}</div>
+  app.innerHTML=`<div class="wrap"><div class="sub"><button class="back" aria-label="رجوع">${ICON.back}</button><div><h2>درس القراءة</h2><small style="color:var(--soft)">${u.ar} · ${u.reads.length>1?`النص ${x+1} من ${u.reads.length}`:'قراءة وفهم'}</small></div></div>
+  <div class="play"><div class="hero in">${scene(rd.s,rd.a)}</div><div class="big en" style="margin-bottom:0">${esc(rd.t)}</div><div class="ar">${esc(rd.ar)}</div>
   <div class="row"><button class="spk" id="all">${ICON.spk} اقرأ لي القصة</button><button class="spk alt" id="stop">توقّف</button></div>
   <div class="gloss" id="gl">المس أي كلمة لتسمعها وتعرف معناها</div>
   <div class="story">${S.map((s,i)=>`<p class="sn" data-i="${i}"><button class="sp" data-i="${i}" aria-label="اسمع الجملة">${ICON.play}</button>${s.split(/\s+/).map(w=>`<span class="wd">${esc(w)}</span>`).join(' ')}</p>`).join('')}</div>
   <p class="ask">بعد أن تقرأ القصة وتفهمها، أجب عن الأسئلة لتجمع النجوم</p>
-  <button class="spk pk" id="qs">أجب عن الأسئلة ${starRow(st(u.id,'read'))}</button></div></div>`;
+  <button class="spk pk" id="qs">أجب عن الأسئلة ${starRow(st(u.id,'read'+x))}</button></div></div>`;
   const mark=i=>app.querySelectorAll('.sn').forEach(p=>p.classList.toggle('on',+p.dataset.i===i));
   const sayCb=(t,cb)=>{try{speechSynthesis.cancel();const m=new SpeechSynthesisUtterance(t);m.lang='en-US';if(voice)m.voice=voice;m.rate=.62;let done=false;const f=()=>{if(!done){done=true;cb&&cb()}};m.onend=f;setTimeout(f,Math.max(2500,t.length*120));speechSynthesis.speak(m)}catch(e){cb&&setTimeout(cb,1500)}};
   const run=i=>{if(stop||i>=S.length){stop=true;mark(-1);return}mark(i);app.querySelector(`.sn[data-i="${i}"]`).scrollIntoView({block:'nearest',behavior:'smooth'});sayCb(S[i],()=>setTimeout(()=>run(i+1),350))};
   $('#all').onclick=()=>{stop=false;run(0)};
   $('#stop').onclick=()=>{stop=true;mark(-1);try{speechSynthesis.cancel()}catch(e){}};
   app.querySelectorAll('.sp').forEach(b=>b.onclick=()=>{stop=true;const i=+b.dataset.i;mark(i);say(S[i])});
-  app.querySelectorAll('.wd').forEach(s=>s.onclick=()=>{stop=true;const w=s.textContent.replace(/^[^A-Za-z']+|[^A-Za-z']+$/g,'');const m=lookup(w);
+  app.querySelectorAll('.wd').forEach(s=>s.onclick=()=>{stop=true;const w=s.textContent.replace(/^[^A-Za-z0-9']+|[^A-Za-z0-9']+$/g,'');const m=lookup(w);
     app.querySelectorAll('.wd.sel').forEach(x=>x.classList.remove('sel'));s.classList.add('sel');
     $('#gl').innerHTML=`<b class="en">${esc(w)}</b>${m?` — <span>${esc(m)}</span>`:''}`;$('#gl').classList.add('has');say(w,1)});
-  app.querySelector('.back').onclick=()=>{stop=true;try{speechSynthesis.cancel()}catch(e){}unit(u)};
-  $('#qs').onclick=()=>{stop=true;try{speechSynthesis.cancel()}catch(e){}start(u,'readq')};
+  app.querySelector('.back').onclick=()=>{stop=true;try{speechSynthesis.cancel()}catch(e){}u.reads.length>1?readList(u):unit(u)};
+  $('#qs').onclick=()=>{stop=true;try{speechSynthesis.cancel()}catch(e){}start(u,'readq',x)};
   scrollTo(0,0);
 }
 function learn(u){
